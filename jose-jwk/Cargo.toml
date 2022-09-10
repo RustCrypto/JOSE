@@ -1,0 +1,21 @@
+[package]
+name = "jose-jwk"
+version = "0.0.0"
+authors = ["RustCrypto Developers"]
+license = "Apache-2.0 OR MIT"
+description = """
+Pure Rust implementation of the JSON Web Key (JWK) component of the
+Javascript Object Signing and Encryption (JOSE) specification as described in
+RFC7517
+"""
+documentation = "https://docs.rs/jose-jwk"
+repository = "https://github.com/RustCrypto/JOSE/tree/master/jose-jwk"
+categories = ["cryptography", "data-structures", "encoding", "parser-implementations"]
+keywords = ["json", "jose"]
+readme = "README.md"
+edition = "2021"
+rust-version = "1.56"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
