@@ -6,6 +6,7 @@ members = [
     "jose-jwk",
     "jose-jws",
     "jose-jwt",
+    "jose",
 ]
 
 [profile.dev]
