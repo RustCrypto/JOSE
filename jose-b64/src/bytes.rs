@@ -115,7 +115,7 @@ impl<C: Config> FromStr for Bytes<Box<[u8]>, C> {
 impl<T: AsRef<[u8]>, C: Config> Serialize for Bytes<T, C> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let b64 = C::encode(self.buf.as_ref());
-        let b64 = Zeroizing::new(String::from_utf8(b64).unwrap());
+        let b64 = Zeroizing::new(String::from_utf8(b64).expect("unreachable"));
         b64.serialize(serializer)
     }
 }

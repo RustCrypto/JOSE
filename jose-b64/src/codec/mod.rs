@@ -43,9 +43,9 @@ pub trait Config: Sized {
         let vec = Vec::with_capacity((value.as_ref().len() + 2) / 3 * 4);
         Encoder::<Vec<u8>, Self>::from(vec)
             .chain(value.as_ref())
-            .unwrap()
+            .expect("unreachable")
             .finish()
-            .unwrap()
+            .expect("unreachable")
     }
 }
 

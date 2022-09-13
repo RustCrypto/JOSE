@@ -6,7 +6,7 @@ use core::marker::PhantomData;
 use zeroize::Zeroizing;
 
 use super::Codec;
-use crate::b64::*;
+use crate::{Config, Update, UrlSafe};
 
 /// A Base64 decoding error.
 #[derive(Debug)]

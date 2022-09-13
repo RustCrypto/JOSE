@@ -5,7 +5,7 @@ use core::marker::PhantomData;
 use zeroize::Zeroizing;
 
 use super::Codec;
-use crate::b64::*;
+use crate::{Config, Update, UrlSafe};
 
 /// A base64 streaming encoder.
 pub struct Encoder<T, C = UrlSafe> {
