@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#![cfg(feature = "serde_json")]
+#![cfg(feature = "json")]
 
 use alloc::boxed::Box;
 use alloc::vec::Vec;
@@ -10,10 +10,11 @@ use core::fmt::Debug;
 use core::ops::Deref;
 use core::str::FromStr;
 
-use serde::de::{DeserializeOwned, Error};
+use serde::de::{DeserializeOwned, Error as _};
 use serde::{Deserialize, Deserializer, Serialize};
 
-use super::{Bytes, Config, UrlSafe};
+use super::Bytes;
+use crate::codec::{Config, Error, UrlSafe};
 
 /// A wrapper for nested, base64-encoded JSON
 ///
@@ -31,7 +32,7 @@ use super::{Bytes, Config, UrlSafe};
 /// **not** reserialized.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize)]
 #[serde(bound(serialize = "Bytes<B, C>: Serialize"))]
-#[cfg_attr(docsrs, doc(cfg(feature = "jws")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "json")))]
 #[serde(transparent)]
 pub struct Json<T, B = Box<[u8]>, C = UrlSafe> {
     buf: Bytes<B, C>,
@@ -88,15 +89,15 @@ where
 
 impl<T, B, C: Config> FromStr for Json<T, B, C>
 where
-    Bytes<B, C>: FromStr<Err = super::Error<Infallible>>,
+    Bytes<B, C>: FromStr<Err = Error<Infallible>>,
     Bytes<B, C>: AsRef<[u8]>,
     T: DeserializeOwned,
 {
-    type Err = super::Error<serde_json::Error>;
+    type Err = Error<serde_json::Error>;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let buf = Bytes::from_str(s).map_err(|x| x.cast())?;
-        buf.try_into().map_err(super::Error::Inner)
+        buf.try_into().map_err(Error::Inner)
     }
 }
 

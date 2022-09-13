@@ -3,4 +3,7 @@
 
 //! Base64 Conversion Utilities
 
-pub use jose_b64::*;
+pub use jose_b64::{codec::*, Optional, Update};
+
+#[cfg(any(feature = "jwk", feature = "jws"))]
+pub use jose_b64::serde::*;

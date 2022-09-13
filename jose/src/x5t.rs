@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+#![cfg(any(feature = "jwk", feature = "jws"))]
+
 use crate::b64::Bytes;
 use serde::{Deserialize, Serialize};
 

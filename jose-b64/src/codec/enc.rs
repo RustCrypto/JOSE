@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use core::marker::PhantomData;
-use zeroize::Zeroizing;
 
-use super::Codec;
-use crate::{Config, Update, UrlSafe};
+use super::{Codec, Config, UrlSafe};
+use crate::{Update, Zeroizing};
 
 /// A base64 streaming encoder.
 pub struct Encoder<T, C = UrlSafe> {

@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+#![cfg(feature = "secret")]
+
 use alloc::boxed::Box;
 use core::fmt::Debug;
 use core::ops::{Deref, DerefMut};
@@ -9,7 +11,7 @@ use serde::{Deserialize, Serialize};
 use subtle::ConstantTimeEq;
 use zeroize::{Zeroize, Zeroizing};
 
-use super::{Bytes, UrlSafe};
+use super::Bytes;
 
 /// A serde wrapper for base64-encoded secrets.
 ///
@@ -20,9 +22,10 @@ use super::{Bytes, UrlSafe};
 ///   2. Its contents are not printed in the debug formatter.
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(transparent)]
+#[cfg_attr(docsrs, doc(cfg(feature = "secret")))]
 #[serde(bound(serialize = "Bytes<T, C>: Serialize"))]
 #[serde(bound(deserialize = "Bytes<T, C>: Deserialize<'de>"))]
-pub struct Secret<T: Zeroize = Box<[u8]>, C = UrlSafe>(Zeroizing<Bytes<T, C>>);
+pub struct Secret<T: Zeroize = Box<[u8]>, C = crate::codec::UrlSafe>(Zeroizing<Bytes<T, C>>);
 
 impl<T: Zeroize, C> Debug for Secret<T, C> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {

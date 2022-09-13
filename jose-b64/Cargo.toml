@@ -14,12 +14,17 @@ readme = "README.md"
 edition = "2021"
 rust-version = "1.63"
 
-[dependencies]
-serde = { version = "1.0.136", default-features = false, features = ["alloc", "derive"] }
-zeroize = { version = "1.5.7", default-features = false, features = ["alloc", "serde"] }
-subtle = { version = "2.4.1", default-features = false }
+[features]
+secret = ["serde", "dep:zeroize", "dep:subtle"]
+json = ["serde", "dep:serde_json"]
+serde = ["dep:serde"]
 
+[dependencies]
+serde = { version = "1.0.136", default-features = false, optional = true, features = ["alloc", "derive"] }
+zeroize = { version = "1.5.7", default-features = false, optional = true, features = ["alloc", "serde"] }
 serde_json = { version = "1.0.79", default-features = false, optional = true, features = ["alloc"] }
+subtle = { version = "2.4.1", default-features = false, optional = true }
+
 
 [package.metadata.docs.rs]
 all-features = true

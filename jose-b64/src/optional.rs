@@ -1,7 +1,8 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-use super::{Config, Encoder, Update, UrlSafe};
+use super::codec::{Config, Encoder, UrlSafe};
+use super::Update;
 
 /// Runtime optional base64 encoding
 pub enum Optional<T, C = UrlSafe> {

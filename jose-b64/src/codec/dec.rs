@@ -3,10 +3,9 @@
 
 use core::convert::Infallible;
 use core::marker::PhantomData;
-use zeroize::Zeroizing;
 
-use super::Codec;
-use crate::{Config, Update, UrlSafe};
+use super::{Codec, Config, UrlSafe};
+use crate::{Update, Zeroizing};
 
 /// A Base64 decoding error.
 #[derive(Debug)]

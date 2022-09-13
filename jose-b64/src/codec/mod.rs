@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+//! Core encoding/decoding types
+
 mod dec;
 mod enc;
 
@@ -49,7 +51,7 @@ pub trait Config: Sized {
     }
 }
 
-pub trait Codec {
+trait Codec {
     const E2D: [u8; 256];
 
     /// Decoded block to encoded block.
@@ -135,17 +137,49 @@ impl Config for UrlSafePad {
 mod test {
     use super::*;
 
+    use alloc::string::String;
+
+    const VALUES: &[(&[u8], &str)] = &[
+        (b"", ""),
+        (b"f", "Zg=="),
+        (b"fo", "Zm8="),
+        (b"foo", "Zm9v"),
+        (b"foob", "Zm9vYg=="),
+        (b"fooba", "Zm9vYmE="),
+        (b"foobar", "Zm9vYmFy"),
+    ];
+
     #[test]
     fn encode() {
-        assert_eq!(Standard::encode(*b"Man"), *b"TWFu");
-        assert_eq!(Standard::encode(*b"foo"), *b"Zm9v");
-        assert_eq!(Standard::encode(*b"bar"), *b"YmFy");
+        for (dec, enc) in VALUES {
+            let out = Standard::encode(dec);
+            assert_eq!(enc.trim_end_matches('='), &String::from_utf8(out).unwrap());
+
+            let out = StandardPad::encode(dec);
+            assert_eq!(enc, &String::from_utf8(out).unwrap());
+
+            let out = UrlSafe::encode(dec);
+            assert_eq!(enc.trim_end_matches('='), &String::from_utf8(out).unwrap());
+
+            let out = UrlSafePad::encode(dec);
+            assert_eq!(enc, &String::from_utf8(out).unwrap());
+        }
     }
 
     #[test]
     fn decode() {
-        assert_eq!(Standard::decode(*b"TWFu").unwrap(), *b"Man");
-        assert_eq!(Standard::decode(*b"Zm9v").unwrap(), *b"foo");
-        assert_eq!(Standard::decode(*b"YmFy").unwrap(), *b"bar");
+        for (dec, enc) in VALUES {
+            let out = Standard::decode(enc.trim_end_matches('=').as_bytes()).unwrap();
+            assert_eq!(dec, &out);
+
+            let out = StandardPad::decode(enc.as_bytes()).unwrap();
+            assert_eq!(dec, &out);
+
+            let out = UrlSafe::decode(enc.trim_end_matches('=').as_bytes()).unwrap();
+            assert_eq!(dec, &out);
+
+            let out = UrlSafePad::decode(enc.as_bytes()).unwrap();
+            assert_eq!(dec, &out);
+        }
     }
 }

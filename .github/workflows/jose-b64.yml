@@ -49,6 +49,15 @@ jobs:
         rust:
           - 1.63.0 # MSRV
           - stable
+        features:
+          -
+          - serde
+          - secret
+          - json
+          - serde,secret
+          - serde,json
+          - secret,json
+          - serde,secret,json
     steps:
       - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
@@ -56,4 +65,4 @@ jobs:
           profile: minimal
           toolchain: ${{ matrix.rust }}
           override: true
-      - run: cargo test
+      - run: cargo test --features=${{ matrix.features }}

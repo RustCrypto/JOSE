@@ -10,10 +10,9 @@ use core::marker::PhantomData;
 use core::ops::{Deref, DerefMut};
 use core::str::FromStr;
 
-use serde::{de::Error, Deserialize, Deserializer, Serialize, Serializer};
-use zeroize::{Zeroize, Zeroizing};
+use serde::{de::Error as _, Deserialize, Deserializer, Serialize, Serializer};
 
-use super::{Config, UrlSafe};
+use crate::codec::{Config, Error, UrlSafe};
 
 /// A serde wrapper for base64-encoded bytes.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -22,7 +21,7 @@ pub struct Bytes<T = Box<[u8]>, C = UrlSafe> {
     cfg: PhantomData<C>,
 }
 
-impl<T: Zeroize, C> Zeroize for Bytes<T, C> {
+impl<T: crate::Zeroize, C> crate::Zeroize for Bytes<T, C> {
     fn zeroize(&mut self) {
         self.buf.zeroize()
     }
@@ -94,7 +93,7 @@ impl<C> From<Bytes<Box<[u8]>, C>> for Bytes<Vec<u8>, C> {
 }
 
 impl<C: Config> FromStr for Bytes<Vec<u8>, C> {
-    type Err = super::Error<Infallible>;
+    type Err = Error<Infallible>;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(Self {
@@ -105,7 +104,7 @@ impl<C: Config> FromStr for Bytes<Vec<u8>, C> {
 }
 
 impl<C: Config> FromStr for Bytes<Box<[u8]>, C> {
-    type Err = super::Error<Infallible>;
+    type Err = Error<Infallible>;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Bytes::<Vec<u8>, C>::from_str(s).map(|x| x.buf.into_boxed_slice().into())
@@ -115,14 +114,14 @@ impl<C: Config> FromStr for Bytes<Box<[u8]>, C> {
 impl<T: AsRef<[u8]>, C: Config> Serialize for Bytes<T, C> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let b64 = C::encode(self.buf.as_ref());
-        let b64 = Zeroizing::new(String::from_utf8(b64).expect("unreachable"));
+        let b64 = crate::Zeroizing::from(String::from_utf8(b64).expect("unreachable"));
         b64.serialize(serializer)
     }
 }
 
 impl<'de, C: Config> Deserialize<'de> for Bytes<Vec<u8>, C> {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        let enc = Zeroizing::new(String::deserialize(deserializer)?);
+        let enc = crate::Zeroizing::from(String::deserialize(deserializer)?);
         let dec = C::decode(enc.as_bytes()).map_err(|_| D::Error::custom("invalid base64"))?;
 
         Ok(Self {
