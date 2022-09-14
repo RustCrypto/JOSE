@@ -33,28 +33,6 @@ impl<T: Type<P256 = U>, U: From<SecretKey>> From<SecretKey> for Key<T> {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
-impl KeyInfo for PublicKey {
-    fn strength(&self) -> usize {
-        16
-    }
-
-    fn is_supported(&self, algo: &Algorithm) -> bool {
-        matches!(algo, Signing(Es256))
-    }
-}
-
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
-impl KeyInfo for SecretKey {
-    fn strength(&self) -> usize {
-        16
-    }
-
-    fn is_supported(&self, algo: &Algorithm) -> bool {
-        matches!(algo, Signing(Es256))
-    }
-}
-
 #[cfg(feature = "jws")]
 #[cfg_attr(docsrs, doc(cfg(all(feature = "jws", feature = "p256"))))]
 impl KeyInfo for VerifyingKey {

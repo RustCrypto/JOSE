@@ -1,44 +1,66 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#![cfg(feature = "p256")]
+#![cfg(feature = "rcrypto-p384")]
 
-use p256::elliptic_curve::sec1::{FromEncodedPoint, ToEncodedPoint};
-use p256::{EncodedPoint, FieldBytes, PublicKey, SecretKey};
+use p384::elliptic_curve::sec1::{FromEncodedPoint, ToEncodedPoint};
+use p384::{EncodedPoint, FieldBytes, PublicKey, SecretKey};
 
-#[cfg(feature = "jws")]
-use p256::ecdsa::{SigningKey, VerifyingKey};
+use jose_jwa::{Algorithm, Algorithm::Signing, Signing::*};
 
-use crate::jwk::{Ec, EcCurves};
-use crate::key::rcrypto::Error;
+use super::super::KeyInfo;
+use super::Error;
+use crate::{Ec, EcCurves};
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
+impl KeyInfo for PublicKey {
+    fn strength(&self) -> usize {
+        24
+    }
+
+    fn is_supported(&self, algo: &Algorithm) -> bool {
+        matches!(algo, Signing(Es384))
+    }
+}
+
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
+impl KeyInfo for SecretKey {
+    fn strength(&self) -> usize {
+        24
+    }
+
+    fn is_supported(&self, algo: &Algorithm) -> bool {
+        matches!(algo, Signing(Es384))
+    }
+}
+
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl From<&PublicKey> for Ec {
     fn from(pk: &PublicKey) -> Self {
         let ep = pk.to_encoded_point(false);
 
         Self {
-            crv: EcCurves::P256,
-            x: ep.x().unwrap().to_vec().into(),
-            y: ep.y().unwrap().to_vec().into(),
+            crv: EcCurves::P384,
+            x: ep.x().expect("unreachable").to_vec().into(),
+            y: ep.y().expect("unreachable").to_vec().into(),
             d: None,
         }
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl From<PublicKey> for Ec {
     fn from(sk: PublicKey) -> Self {
         (&sk).into()
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl TryFrom<&Ec> for PublicKey {
     type Error = Error;
 
     fn try_from(value: &Ec) -> Result<Self, Self::Error> {
-        if value.crv != EcCurves::P256 {
+        if value.crv != EcCurves::P384 {
             return Err(Error::AlgMismatch);
         }
 
@@ -60,7 +82,7 @@ impl TryFrom<&Ec> for PublicKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl TryFrom<Ec> for PublicKey {
     type Error = Error;
 
@@ -69,7 +91,7 @@ impl TryFrom<Ec> for PublicKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl From<&SecretKey> for Ec {
     fn from(sk: &SecretKey) -> Self {
         let mut key: Self = sk.public_key().into();
@@ -78,19 +100,19 @@ impl From<&SecretKey> for Ec {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl From<SecretKey> for Ec {
     fn from(sk: SecretKey) -> Self {
         (&sk).into()
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl TryFrom<&Ec> for SecretKey {
     type Error = Error;
 
     fn try_from(value: &Ec) -> Result<Self, Self::Error> {
-        if value.crv != EcCurves::P256 {
+        if value.crv != EcCurves::P384 {
             return Err(Error::AlgMismatch);
         }
 
@@ -102,51 +124,11 @@ impl TryFrom<&Ec> for SecretKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl TryFrom<Ec> for SecretKey {
     type Error = Error;
 
     fn try_from(value: Ec) -> Result<Self, Self::Error> {
         (&value).try_into()
-    }
-}
-
-#[cfg(feature = "jws")]
-#[cfg_attr(docsrs, doc(cfg(all(feature = "jws", feature = "p256"))))]
-impl TryFrom<&Ec> for VerifyingKey {
-    type Error = Error;
-
-    fn try_from(value: &Ec) -> Result<Self, Self::Error> {
-        Ok(PublicKey::try_from(value)?.into())
-    }
-}
-
-#[cfg(feature = "jws")]
-#[cfg_attr(docsrs, doc(cfg(all(feature = "jws", feature = "p256"))))]
-impl TryFrom<Ec> for VerifyingKey {
-    type Error = Error;
-
-    fn try_from(value: Ec) -> Result<Self, Self::Error> {
-        Ok(PublicKey::try_from(value)?.into())
-    }
-}
-
-#[cfg(feature = "jws")]
-#[cfg_attr(docsrs, doc(cfg(all(feature = "jws", feature = "p256"))))]
-impl TryFrom<&Ec> for SigningKey {
-    type Error = Error;
-
-    fn try_from(value: &Ec) -> Result<Self, Self::Error> {
-        Ok(SecretKey::try_from(value)?.into())
-    }
-}
-
-#[cfg(feature = "jws")]
-#[cfg_attr(docsrs, doc(cfg(all(feature = "jws", feature = "p256"))))]
-impl TryFrom<Ec> for SigningKey {
-    type Error = Error;
-
-    fn try_from(value: Ec) -> Result<Self, Self::Error> {
-        Ok(SecretKey::try_from(value)?.into())
     }
 }

@@ -19,26 +19,3 @@ mod rsa;
 
 pub use key::Key;
 pub(crate) use key::{Kind, Type};
-
-/// An error related to key material.
-#[derive(Copy, Clone, Debug, Default, PartialEq, Eq)]
-pub enum Error {
-    /// The key or signature is invalid.
-    #[default]
-    Invalid,
-
-    /// The private key is unknown.
-    NotPrivate,
-
-    /// An algorithm mismatch occurred.
-    AlgMismatch,
-
-    /// The specified criteria are unsupported.
-    Unsupported,
-}
-
-impl From<Infallible> for Error {
-    fn from(_: Infallible) -> Self {
-        unreachable!()
-    }
-}

@@ -52,8 +52,22 @@ jobs:
           - 1.63.0 # MSRV
           - stable
         features:
+          # Test no features, individual features and all features.
           -
           - url
+          - rcrypto
+          - rcrypto-p256
+          - rcrypto-p384
+          - rcrypto-rsa
+          - url,rcrypto-p256,rcrypto-p384,rcrypto-rsa
+
+          # Test all combinations of rcrypto enablement
+          - rcrypto-p256,rcrypto-p384
+          - rcrypto-p256,rcrypto-rsa
+          - rcrypto-p384,rcrypto-p256
+          - rcrypto-p384,rcrypto-rsa
+          - rcrypto-rsa,rcrypto-p256
+          - rcrypto-rsa,rcrypto-p384
     steps:
       - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1

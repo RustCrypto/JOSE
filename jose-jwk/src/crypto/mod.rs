@@ -3,6 +3,8 @@
 
 //! Cryptographic primitives for JWK
 
+pub mod rcrypto;
+
 mod keyinfo;
 
 pub use keyinfo::KeyInfo;
