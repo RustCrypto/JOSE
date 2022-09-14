@@ -16,6 +16,7 @@ rsa = ["dep:rand_core", "dep:rsa"]
 serde = { version = "1.0.136", default-features = false, features = ["alloc", "derive"] }
 zeroize = { version = "1.5.7", default-features = false, features = ["alloc", "serde"] }
 subtle = { version = "2.4.1", default-features = false }
+jose-jwa = { path = "../jose-jwa" }
 
 # Optional Dependencies
 url = { version = "2.2.2", default-features = false, optional = true, features = ["serde"] }
