@@ -16,6 +16,17 @@ readme = "README.md"
 edition = "2021"
 rust-version = "1.63"
 
+[dependencies]
+serde = { version = "1.0.136", default-features = false, features = ["alloc", "derive"] }
+jose-b64 = { path = "../jose-b64", default-features = false, features = ["secret"] }
+jose-jwa = { path = "../jose-jwa" }
+
+# Optional Dependencies
+url = { version = "2.2.2", default-features = false, optional = true, features = ["serde"] }
+
+[dev-dependencies]
+serde_json = "1.0.85"
+
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]

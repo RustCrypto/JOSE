@@ -37,26 +37,6 @@ pub enum Key {
     Okp(Okp),
 }
 
-impl crate::key::KeyInfo for Key {
-    fn strength(&self) -> usize {
-        match self {
-            Key::Ec(x) => x.strength(),
-            Key::Rsa(x) => x.strength(),
-            Key::Oct(x) => x.strength(),
-            Key::Okp(x) => x.strength(),
-        }
-    }
-
-    fn is_supported(&self, algo: &crate::alg::Algorithm) -> bool {
-        match self {
-            Key::Ec(x) => x.is_supported(algo),
-            Key::Rsa(x) => x.is_supported(algo),
-            Key::Oct(x) => x.is_supported(algo),
-            Key::Okp(x) => x.is_supported(algo),
-        }
-    }
-}
-
 impl From<Ec> for Key {
     #[inline(always)]
     fn from(key: Ec) -> Self {
