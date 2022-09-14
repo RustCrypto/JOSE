@@ -7,8 +7,7 @@ use alloc::vec::Vec;
 
 use serde::{Deserialize, Serialize};
 
-use crate::alg::{Algorithm, Algorithm::Signing, Signing::*};
-use crate::b64::{Bytes, Secret};
+use jose_b64::serde::{Bytes, Secret};
 
 /// An RSA key.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -22,25 +21,6 @@ pub struct Rsa {
     /// The RSA private key material.
     #[serde(skip_serializing_if = "Option::is_none", default, flatten)]
     pub prv: Option<RsaPrivate>,
-}
-
-impl crate::key::KeyInfo for Rsa {
-    fn strength(&self) -> usize {
-        self.n.len() / 16
-    }
-
-    #[allow(clippy::match_like_matches_macro)]
-    fn is_supported(&self, algo: &Algorithm) -> bool {
-        match (algo, self.strength()) {
-            (Signing(Rs256), 16..) => true,
-            (Signing(Rs384), 24..) => true,
-            (Signing(Rs512), 32..) => true,
-            (Signing(Ps256), 16..) => true,
-            (Signing(Ps384), 24..) => true,
-            (Signing(Ps512), 32..) => true,
-            _ => false,
-        }
-    }
 }
 
 /// RSA key private material.

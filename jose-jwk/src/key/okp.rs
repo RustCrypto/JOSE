@@ -5,8 +5,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::alg::{Algorithm, Algorithm::Signing, Signing::*};
-use crate::b64::{Bytes, Secret};
+use jose_b64::serde::{Bytes, Secret};
 
 /// A CFRG-curve key.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -20,21 +19,6 @@ pub struct Okp {
     /// The private key.
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub d: Option<Secret>,
-}
-
-impl crate::key::KeyInfo for Okp {
-    fn strength(&self) -> usize {
-        match self.crv {
-            OkpCurves::Ed25519 => 16,
-            OkpCurves::Ed448 => 24,
-            OkpCurves::X25519 => 16,
-            OkpCurves::X448 => 24,
-        }
-    }
-
-    fn is_supported(&self, algo: &Algorithm) -> bool {
-        matches!(algo, Signing(EdDsa))
-    }
 }
 
 /// The CFRG Curve.

@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! JWK parameter types.
-
-pub use crate::x5t::Thumbprint;
+//! JWK parameter types
 
 use alloc::boxed::Box;
 use alloc::collections::BTreeSet;
@@ -12,8 +10,9 @@ use alloc::vec::Vec;
 
 use serde::{Deserialize, Serialize};
 
-use crate::alg::Algorithm;
-use crate::b64::{Bytes, StandardPad};
+use jose_b64::base64ct::Base64;
+use jose_b64::serde::Bytes;
+use jose_jwa::Algorithm;
 
 /// JWK parameters
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -42,7 +41,7 @@ pub struct Parameters {
 
     /// The X.509 certificate associated with this key.
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub x5c: Option<Vec<Bytes<Box<[u8]>, StandardPad>>>, // base64, not base64url
+    pub x5c: Option<Vec<Bytes<Box<[u8]>, Base64>>>, // base64, not base64url
 
     /// The X.509 thumbprint associated with this key.
     #[serde(flatten)]
@@ -107,4 +106,16 @@ pub enum Operations {
 
     #[serde(rename = "wrapKey")]
     WrapKey,
+}
+
+/// An X.509 thumbprint.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Thumbprint {
+    /// An X.509 thumbprint (SHA-1).
+    #[serde(skip_serializing_if = "Option::is_none", rename = "x5t", default)]
+    pub s1: Option<Bytes<[u8; 20]>>,
+
+    /// An X.509 thumbprint (SHA-2 256).
+    #[serde(skip_serializing_if = "Option::is_none", rename = "x5t#S256", default)]
+    pub s256: Option<Bytes<[u8; 32]>>,
 }
