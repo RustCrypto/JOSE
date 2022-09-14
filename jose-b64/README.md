@@ -7,7 +7,7 @@
 ![Rust Version][rustc-image]
 [![Project Chat][chat-image]][chat-link]
 
-A pure Rust Base64 implementation for use in JOSE crates.
+Base64 utilities for use in JOSE crates.
 
 [Documentation][docs-link]
 

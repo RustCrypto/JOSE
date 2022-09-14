@@ -3,7 +3,8 @@
 
 //! Base64 Conversion Utilities
 
-pub use jose_b64::{codec::*, Optional, Update};
+pub use jose_b64::base64ct::{Base64 as StandardPad, Base64UrlUnpadded as UrlSafe};
+pub use jose_b64::stream::{Decoder, Encoder, Error, Optional, Update};
 
 #[cfg(any(feature = "jwk", feature = "jws"))]
 pub use jose_b64::serde::*;

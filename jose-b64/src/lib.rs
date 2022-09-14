@@ -21,15 +21,12 @@
 
 extern crate alloc;
 
-pub mod codec;
 pub mod serde;
+pub mod stream;
 
-mod optional;
-mod update;
 mod zero;
 
-pub use optional::Optional;
-pub use update::Update;
+pub use base64ct;
 
 #[cfg(feature = "secret")]
 use zeroize::{Zeroize, Zeroizing};

@@ -3,25 +3,27 @@
 
 use core::marker::PhantomData;
 
-use super::{Codec, Config, UrlSafe};
-use crate::{Update, Zeroizing};
+use base64ct::{Base64UrlUnpadded, Encoding};
+
+use super::Update;
+use crate::Zeroizing;
 
 /// A base64 streaming encoder.
-pub struct Encoder<T, C = UrlSafe> {
+pub struct Encoder<T, E = Base64UrlUnpadded> {
     decoded: Zeroizing<[u8; 3]>,
     encoded: Zeroizing<[u8; 4]>,
-    config: PhantomData<C>,
+    config: PhantomData<E>,
     used: usize,
     next: T,
 }
 
-impl<T: Default, C> Default for Encoder<T, C> {
+impl<T: Default, E> Default for Encoder<T, E> {
     fn default() -> Self {
         Self::from(T::default())
     }
 }
 
-impl<T, C> From<T> for Encoder<T, C> {
+impl<T, E> From<T> for Encoder<T, E> {
     fn from(next: T) -> Self {
         Self {
             decoded: Default::default(),
@@ -33,7 +35,7 @@ impl<T, C> From<T> for Encoder<T, C> {
     }
 }
 
-impl<T: Update, C: Config> Update for Encoder<T, C> {
+impl<T: Update, E: Encoding> Update for Encoder<T, E> {
     type Error = T::Error;
 
     fn update(&mut self, buf: impl AsRef<[u8]>) -> Result<(), Self::Error> {
@@ -42,7 +44,7 @@ impl<T: Update, C: Config> Update for Encoder<T, C> {
 
             match self.used {
                 2 => {
-                    *self.encoded = C::d2e(*self.decoded);
+                    E::encode_3bytes(&self.decoded[..], &mut self.encoded[..]);
                     self.next.update(&self.encoded)?;
                     self.used = 0
                 }
@@ -55,22 +57,12 @@ impl<T: Update, C: Config> Update for Encoder<T, C> {
     }
 }
 
-impl<T: Update, C: Config> Encoder<T, C> {
+impl<T: Update, E: Encoding> Encoder<T, E> {
     /// Finish base64 encoding and return the inner type.
     pub fn finish(mut self) -> Result<T, T::Error> {
-        if self.used > 0 {
-            self.decoded[self.used..].copy_from_slice(&[0u8; 3][self.used..]);
-            *self.encoded = C::d2e(*self.decoded);
-            self.used += 1;
-
-            while C::PAD && self.used < 4 {
-                self.encoded[self.used] = b'=';
-                self.used += 1;
-            }
-
-            self.next.update(&self.encoded[..self.used])?;
-        }
-
+        let decoded = &self.decoded[..self.used];
+        let encoded = E::encode(decoded, &mut self.encoded[..]).expect("unreachable");
+        self.next.update(encoded.as_bytes())?;
         Ok(self.next)
     }
 }

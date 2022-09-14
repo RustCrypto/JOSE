@@ -5,16 +5,17 @@
 
 use alloc::boxed::Box;
 use alloc::vec::Vec;
-use core::convert::{Infallible, TryInto};
+use core::convert::Infallible;
 use core::fmt::Debug;
 use core::ops::Deref;
 use core::str::FromStr;
 
+use base64ct::{Base64UrlUnpadded, Encoding};
 use serde::de::{DeserializeOwned, Error as _};
 use serde::{Deserialize, Deserializer, Serialize};
 
 use super::Bytes;
-use crate::codec::{Config, Error, UrlSafe};
+use crate::stream::Error;
 
 /// A wrapper for nested, base64-encoded JSON
 ///
@@ -31,17 +32,17 @@ use crate::codec::{Config, Error, UrlSafe};
 /// serialization, only the pre-serialized bytes are used; the type (`T`) is
 /// **not** reserialized.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize)]
-#[serde(bound(serialize = "Bytes<B, C>: Serialize"))]
+#[serde(bound(serialize = "Bytes<B, E>: Serialize"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "json")))]
 #[serde(transparent)]
-pub struct Json<T, B = Box<[u8]>, C = UrlSafe> {
-    buf: Bytes<B, C>,
+pub struct Json<T, B = Box<[u8]>, E = Base64UrlUnpadded> {
+    buf: Bytes<B, E>,
 
     #[serde(skip_serializing)]
     val: T,
 }
 
-impl<T, B, C> Deref for Json<T, B, C> {
+impl<T, B, E> Deref for Json<T, B, E> {
     type Target = T;
 
     fn deref(&self) -> &Self::Target {
@@ -49,20 +50,20 @@ impl<T, B, C> Deref for Json<T, B, C> {
     }
 }
 
-impl<T, B: AsRef<[u8]>, C> AsRef<[u8]> for Json<T, B, C> {
+impl<T, B: AsRef<[u8]>, E> AsRef<[u8]> for Json<T, B, E> {
     fn as_ref(&self) -> &[u8] {
         self.buf.as_ref()
     }
 }
 
-impl<T, B, C> TryFrom<Bytes<B, C>> for Json<T, B, C>
+impl<T, B, E> TryFrom<Bytes<B, E>> for Json<T, B, E>
 where
-    Bytes<B, C>: AsRef<[u8]>,
+    Bytes<B, E>: AsRef<[u8]>,
     T: DeserializeOwned,
 {
     type Error = serde_json::Error;
 
-    fn try_from(buf: Bytes<B, C>) -> Result<Self, Self::Error> {
+    fn try_from(buf: Bytes<B, E>) -> Result<Self, Self::Error> {
         Ok(Self {
             val: serde_json::from_slice(buf.as_ref())?,
             buf,
@@ -70,9 +71,9 @@ where
     }
 }
 
-impl<T, B, C> Json<T, B, C>
+impl<T, B, E> Json<T, B, E>
 where
-    Bytes<B, C>: From<Vec<u8>>,
+    Bytes<B, E>: From<Vec<u8>>,
     T: Serialize,
 {
     /// Creates a new instance by serializing the input to JSON.
@@ -87,26 +88,26 @@ where
     }
 }
 
-impl<T, B, C: Config> FromStr for Json<T, B, C>
+impl<T, B, E: Encoding> FromStr for Json<T, B, E>
 where
-    Bytes<B, C>: FromStr<Err = Error<Infallible>>,
-    Bytes<B, C>: AsRef<[u8]>,
+    Bytes<B, E>: FromStr<Err = Error<Infallible>>,
+    Bytes<B, E>: AsRef<[u8]>,
     T: DeserializeOwned,
 {
     type Err = Error<serde_json::Error>;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let buf = Bytes::from_str(s).map_err(|x| x.cast())?;
+        let buf = Bytes::from_str(s).map_err(|e| e.cast())?;
         buf.try_into().map_err(Error::Inner)
     }
 }
 
-impl<'de, T, B, C> Deserialize<'de> for Json<T, B, C>
+impl<'de, T, B, E> Deserialize<'de> for Json<T, B, E>
 where
-    Bytes<B, C>: Deserialize<'de>,
-    Bytes<B, C>: AsRef<[u8]>,
+    Bytes<B, E>: Deserialize<'de>,
+    Bytes<B, E>: AsRef<[u8]>,
     T: DeserializeOwned,
-    C: Config,
+    E: Encoding,
 {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         Ok(match Self::try_from(Bytes::deserialize(deserializer)?) {
