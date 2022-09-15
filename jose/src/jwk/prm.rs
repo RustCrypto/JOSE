@@ -55,8 +55,7 @@ impl<T: Into<Algorithm>> From<T> for Parameters {
 
         let cls = match alg {
             Some(Algorithm::Signing(..)) => Some(Class::Signing),
-            Some(Algorithm::Unknown(..)) => None,
-            None => None,
+            _ => None,
         };
 
         Self {
