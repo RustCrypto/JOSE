@@ -1,14 +1,14 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-pub use crate::x5t::Thumbprint;
-
 use alloc::vec::Vec;
 use alloc::{boxed::Box, string::String};
 
+use jose_b64::base64ct::Base64;
+use jose_b64::serde::Bytes;
+use jose_jwa::Signing;
+use jose_jwk::{Jwk, Thumbprint};
 use serde::{Deserialize, Serialize};
-
-use crate::b64::{Bytes, StandardPad};
 
 #[inline]
 fn b64_default() -> bool {
@@ -65,7 +65,7 @@ impl Default for Protected {
 pub struct Unprotected {
     /// RFC 7517 Section 4.1.1
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub alg: Option<crate::alg::Signing>,
+    pub alg: Option<Signing>,
 
     /// RFC 7517 Section 4.1.2
     #[serde(skip_serializing_if = "Option::is_none", default)]
@@ -75,9 +75,7 @@ pub struct Unprotected {
 
     /// RFC 7517 Section 4.1.3
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    #[cfg_attr(docsrs, doc(cfg(feature = "jwk")))]
-    #[cfg(feature = "jwk")]
-    pub jwk: Option<crate::jwk::Jwk>,
+    pub jwk: Option<Jwk>,
 
     /// RFC 7517 Section 4.1.4
     #[serde(skip_serializing_if = "Option::is_none", default)]
@@ -90,7 +88,7 @@ pub struct Unprotected {
 
     /// RFC 7517 Section 4.1.6
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub x5c: Option<Vec<Bytes<Box<[u8]>, StandardPad>>>, // base64, not base64url
+    pub x5c: Option<Vec<Bytes<Box<[u8]>, Base64>>>, // base64, not base64url
 
     /// RFC 7517 Section 4.1.7-8
     #[serde(flatten)]

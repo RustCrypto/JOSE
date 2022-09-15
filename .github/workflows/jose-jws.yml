@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - ".github/workflows/jose-jws.yml"
+      - "jose-b64/**"
+      - "jose-jwa/**"
+      - "jose-jwk/**"
       - "jose-jws/**"
       - "Cargo.*"
   push:
