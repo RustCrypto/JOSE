@@ -4,10 +4,16 @@
 //! Integration with RustCrypto types
 
 #![cfg(feature = "rcrypto")]
+#![cfg_attr(docsrs, doc(cfg(feature = "rcrypto")))]
 
+mod key;
+mod kind;
 mod p256;
 mod p384;
 mod rsa;
+
+pub use key::Key;
+pub use kind::Kind;
 
 use core::convert::Infallible;
 
