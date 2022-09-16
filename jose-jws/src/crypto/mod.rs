@@ -3,19 +3,14 @@
 
 //! JWS Cryptographic Implementation
 
-pub mod rcrypto;
-
 mod core;
-mod sig;
-
-pub use sig::State;
 
 use alloc::{vec, vec::Vec};
 
-use crate::b64::Update;
-use crate::jws::{Protected, Signature, Unprotected};
+use jose_b64::stream::Update;
+use rand_core::RngCore;
 
-use super::{Flattened, General, Jws};
+use crate::{Flattened, General, Jws, Protected, Signature, Unprotected};
 
 /// Signature creation state
 pub trait Signer: Update {
@@ -23,7 +18,7 @@ pub trait Signer: Update {
     type FinishError: From<Self::Error>;
 
     /// Finish processing payload and create the signature.
-    fn finish(self) -> Result<Signature, Self::FinishError>;
+    fn finish(self, rng: impl 'static + RngCore) -> Result<Signature, Self::FinishError>;
 }
 
 /// A signature creation key

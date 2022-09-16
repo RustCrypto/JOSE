@@ -21,6 +21,8 @@
 
 extern crate alloc;
 
+pub mod crypto;
+
 mod compact;
 mod head;
 

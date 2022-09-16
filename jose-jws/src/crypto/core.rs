@@ -3,12 +3,14 @@
 
 use alloc::vec::Vec;
 
-use crate::{alg::Signing, b64::Update};
+use jose_b64::stream::Update;
+use jose_jwa::Signing;
+use rand_core::RngCore;
 
 pub trait CoreSigner: Update {
     type FinishError: From<Self::Error>;
 
-    fn finish(self) -> Result<Vec<u8>, Self::FinishError>;
+    fn finish(self, rng: impl 'static + RngCore) -> Result<Vec<u8>, Self::FinishError>;
 }
 
 pub trait CoreSigningKey<'a> {
