@@ -31,8 +31,8 @@ jose-jwa = { path = "../jose-jwa" }
 url = { version = "2.2.2", default-features = false, optional = true, features = ["serde"] }
 
 # Internal Dependencies
-p256 = { version = "0.11.1", default-features = false, optional = true, features = ["arithmetic"] }
-p384 = { version = "0.11.1", default-features = false, optional = true, features = ["arithmetic"] }
+p256 = { version = "0.13.0", default-features = false, optional = true, features = ["arithmetic"] }
+p384 = { version = "0.13.0", default-features = false, optional = true, features = ["arithmetic"] }
 zeroize = { version = "1.5.7", default-features = false, optional = true, features = ["alloc"] }
 rsa = { version = "0.7.0-rc.0", default-features = false, optional = true }
 

@@ -54,7 +54,7 @@ impl<T: Zeroize, E> DerefMut for Secret<T, E> {
     }
 }
 
-impl<T: Zeroize, U, E> AsRef<U> for Secret<T, E>
+impl<T: Zeroize, U: ?Sized, E> AsRef<U> for Secret<T, E>
 where
     Bytes<T, E>: AsRef<U>,
 {
