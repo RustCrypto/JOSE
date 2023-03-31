@@ -67,6 +67,6 @@ impl Display for Flattened {
         }
 
         let sign = Base64UrlUnpadded::encode_string(&self.signature.signature);
-        write!(f, "{}.{}.{}", prot, payl, sign)
+        write!(f, "{prot}.{payl}.{sign}")
     }
 }

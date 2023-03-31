@@ -95,7 +95,7 @@ impl TryFrom<Ec> for PublicKey {
 impl From<&SecretKey> for Ec {
     fn from(sk: &SecretKey) -> Self {
         let mut key: Self = sk.public_key().into();
-        key.d = Some(sk.to_be_bytes().to_vec().into());
+        key.d = Some(sk.to_bytes().to_vec().into());
         key
     }
 }
@@ -117,7 +117,7 @@ impl TryFrom<&Ec> for SecretKey {
         }
 
         if let Some(d) = value.d.as_ref() {
-            return Self::from_be_bytes(d).map_err(|_| Error::Invalid);
+            return Self::from_slice(d).map_err(|_| Error::Invalid);
         }
 
         Err(Error::NotPrivate)
