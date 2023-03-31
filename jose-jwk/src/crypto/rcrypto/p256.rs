@@ -117,10 +117,7 @@ impl TryFrom<&Ec> for SecretKey {
         }
 
         if let Some(d) = value.d.as_ref() {
-            let field_bytes = p256::NonZeroScalar::try_from(d.as_ref())
-                .map(p256::FieldBytes::from)
-                .map_err(|_| Error::Invalid)?;
-            return Self::from_bytes(&field_bytes).map_err(|_| Error::Invalid);
+            return Self::from_slice(d).map_err(|_| Error::Invalid);
         }
 
         Err(Error::NotPrivate)
