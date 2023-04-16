@@ -122,13 +122,16 @@ mod tests {
             EdDsa, Es256, Es256K, Es384, Es512, Hs256, Hs384, Hs512, Ps256, Ps384, Ps512, Rs256,
             Rs384, Rs512, Null,
         ];
-        let ser = serde_json::to_string(&input).unwrap();
+        let ser = serde_json::to_string(&input).expect("serialization failed");
 
         assert_eq!(
             ser,
             r#"["EdDSA","ES256","ES256K","ES384","ES512","HS256","HS384","HS512","PS256","PS384","PS512","RS256","RS384","RS512","none"]"#
         );
 
-        assert_eq!(serde_json::from_str::<Vec<Signing>>(&ser).unwrap(), input);
+        assert_eq!(
+            serde_json::from_str::<Vec<Signing>>(&ser).expect("deserialization failed"),
+            input
+        );
     }
 }
