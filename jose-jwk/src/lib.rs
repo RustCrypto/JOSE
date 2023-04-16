@@ -29,6 +29,9 @@ mod prm;
 pub use key::*;
 pub use prm::{Class, Operations, Parameters, Thumbprint};
 
+pub use jose_b64;
+pub use jose_jwa;
+
 use serde::{Deserialize, Serialize};
 
 /// A set of JSON Web Keys.
