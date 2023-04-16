@@ -20,12 +20,12 @@ json = ["serde", "dep:serde_json"]
 serde = ["dep:serde"]
 
 [dependencies]
-base64ct = { version = "1.5.2", default-features = false, features = ["alloc"] }
+base64ct = { version = "1.6.0", default-features = false, features = ["alloc"] }
 
-serde = { version = "1.0.136", default-features = false, optional = true, features = ["alloc", "derive"] }
-zeroize = { version = "1.5.7", default-features = false, optional = true, features = ["alloc", "serde"] }
-serde_json = { version = "1.0.79", default-features = false, optional = true, features = ["alloc"] }
-subtle = { version = "2.4.1", default-features = false, optional = true }
+serde = { version = "1.0.160", default-features = false, optional = true, features = ["alloc", "derive"] }
+zeroize = { version = "1.6.0", default-features = false, optional = true, features = ["alloc", "serde"] }
+serde_json = { version = "1.0.96", default-features = false, optional = true, features = ["alloc"] }
+subtle = { version = "2.5.0", default-features = false, optional = true }
 
 
 [package.metadata.docs.rs]
