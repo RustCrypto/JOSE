@@ -11,6 +11,10 @@ Pure Rust implementation of the JSON Web Algorithm (JWA) component of the
 Javascript Object Signing and Encryption ([JOSE]) specification as described
 in [RFC7518].
 
+JWAs specify encryption and signing algorithms that can be used for values in
+JOSE `"alg"` keys. This crate provides an enum representation of the allowed
+algorithms.
+
 [Documentation][docs-link]
 
 ## Minimum Supported Rust Version

@@ -19,14 +19,19 @@
     unused_qualifications
 )]
 
+use core::fmt;
+
 use serde::{Deserialize, Serialize};
 
-/// Algorithms
+/// Possible types of algorithms that can exist in an "alg" descriptor.
+///
+/// Currently only signing algorithms are represented.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[allow(missing_docs)]
 #[serde(untagged)]
 #[non_exhaustive]
 pub enum Algorithm {
+    /// Algorithms used for digital signatures and MACs
     Signing(Signing),
 }
 
@@ -37,64 +42,54 @@ impl From<Signing> for Algorithm {
     }
 }
 
-/// Signing Algorithms
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+/// Algorithms used for signing, as defined in [RFC7518] section 3.1.
+///
+/// [RFC7518]: https://www.rfc-editor.org/rfc/rfc7518
 #[non_exhaustive]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum Signing {
     /// EdDSA signature algorithms (Optional)
     #[serde(rename = "EdDSA")]
     EdDsa,
 
     /// ECDSA using P-256 and SHA-256 (Recommended+)
-    #[serde(rename = "ES256")]
     Es256,
 
     /// ECDSA using secp256k1 curve and SHA-256 (Optional)
-    #[serde(rename = "ES256K")]
     Es256K,
 
     /// ECDSA using P-384 and SHA-384 (Optional)
-    #[serde(rename = "ES384")]
     Es384,
 
     /// ECDSA using P-521 and SHA-512 (Optional)
-    #[serde(rename = "ES512")]
     Es512,
 
     /// HMAC using SHA-256 (Required)
-    #[serde(rename = "HS256")]
     Hs256,
 
     /// HMAC using SHA-384 (Optional)
-    #[serde(rename = "HS384")]
     Hs384,
 
     /// HMAC using SHA-512 (Optional)
-    #[serde(rename = "HS512")]
     Hs512,
 
     /// RSASSA-PSS using SHA-256 and MGF1 with SHA-256 (Optional)
-    #[serde(rename = "PS256")]
     Ps256,
 
     /// RSASSA-PSS using SHA-384 and MGF1 with SHA-384 (Optional)
-    #[serde(rename = "PS384")]
     Ps384,
 
     /// RSASSA-PSS using SHA-512 and MGF1 with SHA-512 (Optional)
-    #[serde(rename = "PS512")]
     Ps512,
 
     /// RSASSA-PKCS1-v1_5 using SHA-256 (Recommended)
-    #[serde(rename = "RS256")]
     Rs256,
 
     /// RSASSA-PKCS1-v1_5 using SHA-384 (Optional)
-    #[serde(rename = "RS384")]
     Rs384,
 
     /// RSASSA-PKCS1-v1_5 using SHA-512 (Optional)
-    #[serde(rename = "RS512")]
     Rs512,
 
     /// No digital signature or MAC performed (Optional)
@@ -102,4 +97,38 @@ pub enum Signing {
     /// This variant is renamed as `Null` to avoid colliding with `Option::None`.
     #[serde(rename = "none")]
     Null,
+}
+
+impl fmt::Display for Signing {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.serialize(f)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    extern crate std;
+
+    use std::prelude::rust_2021::*;
+    use std::vec;
+
+    use super::*;
+
+    #[test]
+    fn simple_roundtrip() {
+        use Signing::*;
+
+        let input = vec![
+            EdDsa, Es256, Es256K, Es384, Es512, Hs256, Hs384, Hs512, Ps256, Ps384, Ps512, Rs256,
+            Rs384, Rs512, Null,
+        ];
+        let ser = serde_json::to_string(&input).unwrap();
+
+        assert_eq!(
+            ser,
+            r#"["EdDSA","ES256","ES256K","ES384","ES512","HS256","HS384","HS512","PS256","PS384","PS512","RS256","RS384","RS512","none"]"#
+        );
+
+        assert_eq!(serde_json::from_str::<Vec<Signing>>(&ser).unwrap(), input);
+    }
 }
