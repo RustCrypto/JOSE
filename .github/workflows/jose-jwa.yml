@@ -7,7 +7,8 @@ on:
       - "jose-jwa/**"
       - "Cargo.*"
   push:
-    branches: master
+    branches:
+      - master
 
 defaults:
   run:
@@ -15,6 +16,7 @@ defaults:
 
 env:
   RUSTFLAGS: "-Dwarnings"
+  CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
 
 jobs:
   minimal-versions:
@@ -24,6 +26,7 @@ jobs:
 
   no_std:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     strategy:
       matrix:
         rust:
@@ -34,16 +37,15 @@ jobs:
           - wasm32-unknown-unknown
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
+          targets: ${{ matrix.target }}
           toolchain: ${{ matrix.rust }}
-          target: ${{ matrix.target }}
-          override: true
       - run: cargo build --target ${{ matrix.target }} --no-default-features
 
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     strategy:
       matrix:
         rust:
@@ -51,9 +53,7 @@ jobs:
           - stable
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: ${{ matrix.rust }}
-          override: true
       - run: cargo test
