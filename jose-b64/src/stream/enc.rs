@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+use core::fmt;
 use core::marker::PhantomData;
 
 use base64ct::{Base64UrlUnpadded, Encoding};
@@ -64,5 +65,13 @@ impl<T: Update, E: Encoding> Encoder<T, E> {
         let encoded = E::encode(decoded, &mut self.encoded[..]).expect("unreachable");
         self.next.update(encoded.as_bytes())?;
         Ok(self.next)
+    }
+}
+
+impl<T: fmt::Debug, E> fmt::Debug for Encoder<T, E> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Encoder")
+            .field("next", &self.next)
+            .finish_non_exhaustive()
     }
 }

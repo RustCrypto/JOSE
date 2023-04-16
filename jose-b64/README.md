@@ -7,7 +7,13 @@
 ![Rust Version][rustc-image]
 [![Project Chat][chat-image]][chat-link]
 
-Base64 utilities for use in JOSE crates.
+This crate provides base64 utilities for use in other JOSE crates. Features
+include:
+
+- Base64 streaming encoders and decoders
+- `serde` utilities for working nested JSON and base64 with the `serde` or
+  `json` feature flags
+- Safe handling of cyptographic data with the `secret` feature flag
 
 [Documentation][docs-link]
 

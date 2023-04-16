@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+use alloc::string::String;
 use alloc::vec::Vec;
 
 use core::convert::Infallible;
@@ -30,6 +31,15 @@ impl Update for Vec<u8> {
 
     fn update(&mut self, chunk: impl AsRef<[u8]>) -> Result<(), Self::Error> {
         self.extend(chunk.as_ref());
+        Ok(())
+    }
+}
+
+impl Update for String {
+    type Error = core::str::Utf8Error;
+
+    fn update(&mut self, chunk: impl AsRef<[u8]>) -> Result<(), Self::Error> {
+        self.push_str(core::str::from_utf8(chunk.as_ref())?);
         Ok(())
     }
 }

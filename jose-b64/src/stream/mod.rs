@@ -3,11 +3,28 @@
 
 //! Streamed encoding/decoding types
 //!
-//! NOTE WELL: DO NOT use these types for decoding secrets.
+//! **SECURITY NOTE**: DO NOT use these types for decoding secrets.
 //!
 //! These types are useful for streams feeding into JWS or JWE. However, since
 //! they report invalid base64 errors for each block, this could be used in a
 //! timing attack if used to decode secrets.
+//!
+//! ```
+//! use jose_b64::stream::{Decoder, Encoder, Update};
+//! use jose_b64::base64ct::Base64UrlUnpadded;
+//!
+//! let mut enc: Encoder<String, Base64UrlUnpadded> = Encoder::default();
+//! enc.update("Hello world!").unwrap();
+//! let encoded = enc.finish().unwrap();
+//! assert_eq!(encoded, "SGVsbG8gd29ybGQh");
+//!
+//! // If you may need to serialize potentially invalid UTF8 or can't guarantee that your
+//! // chunks are at utf8 boundaries, use `Decoder<Vec<u8>, _>` instead
+//! let mut dec: Decoder<String, Base64UrlUnpadded> = Decoder::default();
+//! dec.update(encoded).unwrap();
+//! let decoded = dec.finish().unwrap();
+//! assert_eq!(decoded, "Hello world!");
+//! ```
 
 use core::convert::Infallible;
 
