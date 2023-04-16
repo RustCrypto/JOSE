@@ -33,12 +33,13 @@ use alloc::{vec, vec::Vec};
 use jose_b64::serde::{Bytes, Json};
 use serde::{Deserialize, Serialize};
 
-/// The JSON Web Signature
+/// A JSON Web Signature representation
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[non_exhaustive]
 #[allow(clippy::large_enum_variant)]
 #[serde(untagged)]
 pub enum Jws {
-    /// General Serialization
+    /// General Serialization. This is
     General(General),
 
     /// Flattened Serialization
@@ -58,6 +59,23 @@ impl From<Flattened> for Jws {
 }
 
 /// General Serialization
+///
+/// This is the usual JWS form, which allows multiple signatures to be
+/// specified.
+///
+/// ```json
+/// {
+///     "payload":"<payload contents>",
+///     "signatures":[
+///      {"protected":"<integrity-protected header 1 contents>",
+///       "header":<non-integrity-protected header 1 contents>,
+///       "signature":"<signature 1 contents>"},
+///      ...
+///      {"protected":"<integrity-protected header N contents>",
+///       "header":<non-integrity-protected header N contents>,
+///       "signature":"<signature N contents>"}]
+/// }
+/// ```
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct General {
     /// The payload of the signature.
@@ -77,6 +95,18 @@ impl From<Flattened> for General {
 }
 
 /// Flattened Serialization
+///
+/// This is similar to the general serialization but is more compact, only
+/// supporting one signature.
+///
+/// ```json
+/// {
+///     "payload":"<payload contents>",
+///     "protected":"<integrity-protected header contents>",
+///     "header":<non-integrity-protected header contents>,
+///     "signature":"<signature contents>"
+/// }
+/// ```
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Flattened {
     /// The payload of the signature.

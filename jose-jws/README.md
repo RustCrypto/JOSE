@@ -11,6 +11,61 @@ Pure Rust implementation of the JSON Web Signature ([JWS]) component of the
 Javascript Object Signing and Encryption ([JOSE]) specification as described
 in [RFC7515].
 
+JSON Web Signatures are a way of sharing unencrypted data in a way that the
+sender can be verified. A JWS has the following contents:
+
+- A verifyable payload
+- One or more signatures including:
+  - An optional unprotected header (nonverifyable) containing hints about the
+    algorithm
+  - An optional protected header (verifyable using the signature)
+  - A signature
+
+A client can use the information provided in a JWS to verify the integrity of
+the data, meaning the client can be sure that the data did come from the
+intended sender.
+
+```rust
+use jose_jws::{Jws, Signature};
+
+let jws_json = serde_json::json!({
+    "payload": "SGVsbG8gd29ybGQh",
+    "signatures": [
+        {
+            "protected": "eyJhbGciOiJSUzI1NiJ9",
+            "header": {
+                "kid": "2010-12-29"
+            },
+            "signature": "cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOi\
+            Zj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYN\
+            X4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0Gar\
+            ZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh\
+            6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQ\
+            Ge77Rw"
+        },
+        {
+            "protected": "eyJhbGciOiJFUzI1NiJ9",
+            "header": {
+                "kid": "e9bc097a-ce51-4036-9562-d2ade882db0d"
+            },
+            "signature": "DtEhU3ljbEg8L38VWAfUAqOyKAM6-Xx-F4GawxaepmXFCgfTjDxw5djx\
+            La8ISlSApmWQxfKTUJqPP3-Kg6NU1Q"
+        }
+    ]
+});
+
+let Jws::General(jws) = serde_json::from_value(jws_json).unwrap() else {
+    panic!("couldn't deserialize JWS");
+};
+
+assert_eq!(jws.signatures.len(), 2);
+
+let payload = jws.payload.unwrap();
+let payload_str = core::str::from_utf8(&payload).unwrap();
+
+assert_eq!(payload_str, "Hello world!")
+```
+
 [Documentation][docs-link]
 
 ## Minimum Supported Rust Version
