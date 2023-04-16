@@ -14,7 +14,7 @@ use jose_b64::base64ct::Base64;
 use jose_b64::serde::Bytes;
 use jose_jwa::Algorithm;
 
-/// JWK parameters
+/// JWK parameters unrelated to the key implementation
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Parameters {
     /// The algorithm used with this key.
@@ -80,31 +80,17 @@ pub enum Class {
 /// Key operations (i.e. `key_use` in the RFC)
 // NOTE: Keep in lexicographical order.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[allow(missing_docs)]
 #[non_exhaustive]
 pub enum Operations {
-    #[serde(rename = "decrypt")]
     Decrypt,
-
-    #[serde(rename = "deriveBits")]
     DeriveBits,
-
-    #[serde(rename = "deriveKey")]
     DeriveKey,
-
-    #[serde(rename = "encrypt")]
     Encrypt,
-
-    #[serde(rename = "sign")]
     Sign,
-
-    #[serde(rename = "unwrapKey")]
     UnwrapKey,
-
-    #[serde(rename = "verify")]
     Verify,
-
-    #[serde(rename = "wrapKey")]
     WrapKey,
 }
 

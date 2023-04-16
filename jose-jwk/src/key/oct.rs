@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use jose_b64::serde::Secret;
 
-/// A symmetric key.
+/// A symmetric octet key.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Oct {
     /// The symmetric key.

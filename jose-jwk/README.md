@@ -11,6 +11,12 @@ Pure Rust implementation of the JSON Web Key ([JWK]) component of the
 Javascript Object Signing and Encryption ([JOSE]) specification as described
 in [RFC7517].
 
+A JWK is a way to represent cryptographic keys in JSON, typically public keys.
+This format contains information about how the key needs to be used so a child
+node can validate what a parent node sends (e.g. with JWTs) or encrypt messages
+for the parent node using this key (e.g. with JWEs). This crate provides data
+structures to interface with this format.
+
 ```rust
 use jose_jwk::{Jwk, JwkSet, Key};
 use jose_jwk::jose_jwa::{Algorithm, Signing};
@@ -23,7 +29,7 @@ let keys = serde_json::json!({
             "x": "MKBCTNIcKUSDii11ySs3526iDZ8AiTo7Tu6KPAqv7D4",
             "y": "4Etl6SRW2YiLUrN5vfvVHuhp7x8PxltmWWlbbM4IFyM",
             "use": "enc",
-            "kid": "1"
+            "kid": "some-ec-kid"
         },
         {
             "kty": "RSA",
@@ -35,7 +41,7 @@ let keys = serde_json::json!({
             kEgU8awapJzKnqDKgw",
             "e": "AQAB",
             "alg": "RS256",
-            "kid": "2011-04-29"
+            "kid": "some-rsa-kid"
         }
     ]
 });
@@ -47,9 +53,10 @@ let rsa_jwk: &Jwk = &jwkset.keys[1];
 assert!(matches!(ec_jwk.key, Key::Ec(_)));
 assert!(matches!(rsa_jwk.key, Key::Rsa(_)));
 
-assert_eq!(ec_jwk.prm.alg, None);
-assert_eq!(rsa_jwk.prm.alg, Some(Algorithm::Signing(Signing::Rs256)));
+assert_eq!(ec_jwk.prm.kid, Some(String::from("some-ec-kid")));
+assert_eq!(rsa_jwk.prm.kid, Some(String::from("some-rsa-kid")));
 
+assert_eq!(rsa_jwk.prm.alg, Some(Algorithm::Signing(Signing::Rs256)));
 ```
 
 [Documentation][docs-link]

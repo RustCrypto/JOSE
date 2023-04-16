@@ -7,7 +7,9 @@ use serde::{Deserialize, Serialize};
 
 use jose_b64::serde::{Bytes, Secret};
 
-/// A CFRG-curve key.
+/// A octet key pair CFRG-curve key, as defined in [RFC 8037]
+///
+/// [RFC 8037]: https://www.rfc-editor.org/rfc/rfc8037
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Okp {
     /// The CFRG curve.

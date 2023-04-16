@@ -15,17 +15,15 @@ pub use self::oct::Oct;
 pub use self::okp::{Okp, OkpCurves};
 pub use self::rsa::{Rsa, RsaOptional, RsaOtherPrimes, RsaPrivate};
 
-/// A key.
+/// A key type that can be contained in a JWK.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(tag = "kty")]
+#[serde(rename_all = "UPPERCASE", tag = "kty")]
 #[non_exhaustive]
 pub enum Key {
     /// An elliptic-curve key.
-    #[serde(rename = "EC")]
     Ec(Ec),
 
     /// An RSA key.
-    #[serde(rename = "RSA")]
     Rsa(Rsa),
 
     /// A symmetric key.
@@ -33,7 +31,6 @@ pub enum Key {
     Oct(Oct),
 
     /// A CFRG-curve key.
-    #[serde(rename = "OKP")]
     Okp(Okp),
 }
 
