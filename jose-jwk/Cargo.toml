@@ -24,7 +24,7 @@ rcrypto = ["dep:zeroize"]
 
 [dependencies]
 serde = { version = "1.0.160", default-features = false, features = ["alloc", "derive"] }
-jose-b64 = { path = "../jose-b64", default-features = false, features = ["secret"] }
+jose-b64 = { version = "0.1", default-features = false, features = ["secret"], path = "../jose-b64" }
 jose-jwa = { path = "../jose-jwa" }
 
 # Optional Dependencies
