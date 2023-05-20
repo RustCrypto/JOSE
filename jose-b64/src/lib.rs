@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#![doc = include_str!("../README.md")]
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_cfg))]
+#![doc = include_str!("../README.md")]
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/RustCrypto/media/6ee8e381/logo.svg",
     html_favicon_url = "https://raw.githubusercontent.com/RustCrypto/media/6ee8e381/logo.svg"
