@@ -3,7 +3,10 @@
 
 #![cfg(feature = "rcrypto-rsa")]
 
-use rsa::{BigUint, PublicKeyParts, RsaPrivateKey, RsaPublicKey};
+use rsa::{
+    traits::{PrivateKeyParts, PublicKeyParts},
+    BigUint, RsaPrivateKey, RsaPublicKey,
+};
 
 use jose_jwa::{Algorithm, Algorithm::Signing, Signing::*};
 
