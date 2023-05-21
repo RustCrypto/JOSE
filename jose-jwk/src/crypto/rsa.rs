@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#![cfg(feature = "rcrypto-rsa")]
+#![cfg(feature = "rsa")]
 
 use rsa::{
     traits::{PrivateKeyParts, PublicKeyParts},

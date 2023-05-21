@@ -56,22 +56,23 @@ jobs:
         features:
           # Test no features, individual features and all features.
           - ""
+          - crypto
+          - p256
+          - p384
+          - rsa
           - url
-          - rcrypto-p256
-          - rcrypto-p384
-          - rcrypto-rsa
-          - url,rcrypto-p256,rcrypto-p384,rcrypto-rsa
+          - p256,p384,rsa,url
 
-          # Test all combinations of rcrypto enablement
-          - rcrypto-p256,rcrypto-p384
-          - rcrypto-p256,rcrypto-rsa
-          - rcrypto-p384,rcrypto-p256
-          - rcrypto-p384,rcrypto-rsa
-          - rcrypto-rsa,rcrypto-p256
-          - rcrypto-rsa,rcrypto-p384
+          # Test all combinations of crypto enablement
+          - p256,p384
+          - p256,rsa
+          - p384,p256
+          - p384,rsa
+          - rsa,p256
+          - rsa,p384
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
-      - run: cargo test --features=${{ matrix.features }}
+      - run: cargo test --no-default-features --features=${{ matrix.features }}
