@@ -3,8 +3,38 @@
 
 //! Cryptographic primitives for JWK
 
-pub mod rcrypto;
-
+mod key;
 mod keyinfo;
+mod kind;
+mod p256;
+mod p384;
+mod rsa;
 
+pub use key::Key;
 pub use keyinfo::KeyInfo;
+pub use kind::Kind;
+
+use core::convert::Infallible;
+
+/// An error related to key material.
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq)]
+pub enum Error {
+    /// The inputs are invalid.
+    #[default]
+    Invalid,
+
+    /// The private key is unknown.
+    NotPrivate,
+
+    /// An algorithm mismatch occurred.
+    AlgMismatch,
+
+    /// The specified criteria are unsupported.
+    Unsupported,
+}
+
+impl From<Infallible> for Error {
+    fn from(_: Infallible) -> Self {
+        unreachable!()
+    }
+}
