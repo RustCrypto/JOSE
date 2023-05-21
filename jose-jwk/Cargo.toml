@@ -17,14 +17,13 @@ edition = "2021"
 rust-version = "1.65"
 
 [features]
-rcrypto-p256 = ["dep:p256"]
-rcrypto-p384 = ["dep:p384"]
-rcrypto-rsa = ["dep:rsa"]
+default = ["crypto"]
+crypto = ["p256", "p384", "rsa"]
 
 [dependencies]
-serde = { version = "1.0.160", default-features = false, features = ["alloc", "derive"] }
-jose-jwa = { version = "0.1", path = "../jose-jwa" }
 jose-b64 = { version = "0.1", default-features = false, features = ["secret"], path = "../jose-b64" }
+jose-jwa = { version = "0.1", path = "../jose-jwa" }
+serde = { version = "1.0.160", default-features = false, features = ["alloc", "derive"] }
 zeroize = { version = "1.6.0", default-features = false, features = ["alloc"] }
 
 # optional dependencies

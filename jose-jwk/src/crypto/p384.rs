@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#![cfg(feature = "rcrypto-p384")]
+#![cfg(feature = "p384")]
 
 use p384::elliptic_curve::sec1::{FromEncodedPoint, ToEncodedPoint};
 use p384::{EncodedPoint, FieldBytes, PublicKey, SecretKey};
