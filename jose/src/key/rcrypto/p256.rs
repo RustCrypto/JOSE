@@ -13,7 +13,6 @@ use super::key::{Key, Kind, Type};
 use crate::alg::{Algorithm, Algorithm::Signing, Signing::*};
 use crate::key::KeyInfo;
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
 impl<T: Type<P256 = U>, U: From<PublicKey>> From<PublicKey> for Key<T> {
     fn from(value: PublicKey) -> Self {
         Self {
@@ -23,7 +22,6 @@ impl<T: Type<P256 = U>, U: From<PublicKey>> From<PublicKey> for Key<T> {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
 impl<T: Type<P256 = U>, U: From<SecretKey>> From<SecretKey> for Key<T> {
     fn from(value: SecretKey) -> Self {
         Self {
@@ -34,7 +32,6 @@ impl<T: Type<P256 = U>, U: From<SecretKey>> From<SecretKey> for Key<T> {
 }
 
 #[cfg(feature = "jws")]
-#[cfg_attr(docsrs, doc(cfg(all(feature = "jws", feature = "p256"))))]
 impl KeyInfo for VerifyingKey {
     fn strength(&self) -> usize {
         16
@@ -46,7 +43,6 @@ impl KeyInfo for VerifyingKey {
 }
 
 #[cfg(feature = "jws")]
-#[cfg_attr(docsrs, doc(cfg(all(feature = "jws", feature = "p256"))))]
 impl KeyInfo for SigningKey {
     fn strength(&self) -> usize {
         16

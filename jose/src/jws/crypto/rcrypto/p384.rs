@@ -12,7 +12,6 @@ use super::{Signing, State, Verifying};
 use crate::alg::{Signing as Sign, Signing::*};
 use crate::key::rcrypto::{Error, Key, Kind};
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p384")))]
 impl From<VerifyingKey> for Key<Verifying> {
     fn from(value: VerifyingKey) -> Self {
         Self {
@@ -22,7 +21,6 @@ impl From<VerifyingKey> for Key<Verifying> {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p384")))]
 impl From<SigningKey> for Key<Signing> {
     fn from(value: SigningKey) -> Self {
         Self {
@@ -32,7 +30,6 @@ impl From<SigningKey> for Key<Signing> {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p384")))]
 impl<'a> CoreVerifyingKey<'a> for VerifyingKey {
     type StartError = Error;
     type Finish = State<'a, Verifying>;
@@ -45,7 +42,6 @@ impl<'a> CoreVerifyingKey<'a> for VerifyingKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "p384")))]
 impl<'a> CoreSigningKey<'a> for SigningKey {
     type StartError = Error;
     type Finish = State<'a, Signing>;

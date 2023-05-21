@@ -33,7 +33,6 @@ use crate::stream::Error;
 /// **not** reserialized.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize)]
 #[serde(bound(serialize = "Bytes<B, E>: Serialize"))]
-#[cfg_attr(docsrs, doc(cfg(feature = "json")))]
 #[serde(transparent)]
 pub struct Json<T, B = Box<[u8]>, E = Base64UrlUnpadded> {
     buf: Bytes<B, E>,

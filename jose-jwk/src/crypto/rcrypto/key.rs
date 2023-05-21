@@ -25,17 +25,14 @@ pub enum Key {
 
     /// An RSA key.
     #[cfg(feature = "rcrypto-rsa")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
     Rsa(super::Kind<rsa::RsaPublicKey, rsa::RsaPrivateKey>),
 
     /// A P-256 key.
     #[cfg(feature = "rcrypto-p256")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
     P256(super::Kind<p256::PublicKey, p256::SecretKey>),
 
     /// A P-384 key.
     #[cfg(feature = "rcrypto-p384")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
     P384(super::Kind<p384::PublicKey, p384::SecretKey>),
 }
 
@@ -78,7 +75,6 @@ impl From<Zeroizing<Box<[u8]>>> for Key {
 }
 
 #[cfg(feature = "rcrypto-rsa")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl From<super::Kind<rsa::RsaPublicKey, rsa::RsaPrivateKey>> for Key {
     fn from(value: super::Kind<rsa::RsaPublicKey, rsa::RsaPrivateKey>) -> Self {
         Self::Rsa(value)
@@ -86,7 +82,6 @@ impl From<super::Kind<rsa::RsaPublicKey, rsa::RsaPrivateKey>> for Key {
 }
 
 #[cfg(feature = "rcrypto-rsa")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl From<rsa::RsaPublicKey> for Key {
     fn from(value: rsa::RsaPublicKey) -> Self {
         Self::Rsa(super::Kind::Public(value))
@@ -94,7 +89,6 @@ impl From<rsa::RsaPublicKey> for Key {
 }
 
 #[cfg(feature = "rcrypto-rsa")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl From<rsa::RsaPrivateKey> for Key {
     fn from(value: rsa::RsaPrivateKey) -> Self {
         Self::Rsa(super::Kind::Secret(value))
@@ -102,7 +96,6 @@ impl From<rsa::RsaPrivateKey> for Key {
 }
 
 #[cfg(feature = "rcrypto-p256")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl From<super::Kind<p256::PublicKey, p256::SecretKey>> for Key {
     fn from(value: super::Kind<p256::PublicKey, p256::SecretKey>) -> Self {
         Self::P256(value)
@@ -110,7 +103,6 @@ impl From<super::Kind<p256::PublicKey, p256::SecretKey>> for Key {
 }
 
 #[cfg(feature = "rcrypto-p256")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl From<p256::PublicKey> for Key {
     fn from(value: p256::PublicKey) -> Self {
         Self::P256(super::Kind::Public(value))
@@ -118,7 +110,6 @@ impl From<p256::PublicKey> for Key {
 }
 
 #[cfg(feature = "rcrypto-p256")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl From<p256::SecretKey> for Key {
     fn from(value: p256::SecretKey) -> Self {
         Self::P256(super::Kind::Secret(value))
@@ -126,7 +117,6 @@ impl From<p256::SecretKey> for Key {
 }
 
 #[cfg(feature = "rcrypto-p384")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl From<super::Kind<p384::PublicKey, p384::SecretKey>> for Key {
     fn from(value: super::Kind<p384::PublicKey, p384::SecretKey>) -> Self {
         Self::P384(value)
@@ -134,7 +124,6 @@ impl From<super::Kind<p384::PublicKey, p384::SecretKey>> for Key {
 }
 
 #[cfg(feature = "rcrypto-p384")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl From<p384::PublicKey> for Key {
     fn from(value: p384::PublicKey) -> Self {
         Self::P384(super::Kind::Public(value))
@@ -142,7 +131,6 @@ impl From<p384::PublicKey> for Key {
 }
 
 #[cfg(feature = "rcrypto-p384")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl From<p384::SecretKey> for Key {
     fn from(value: p384::SecretKey) -> Self {
         Self::P384(super::Kind::Secret(value))
@@ -156,7 +144,6 @@ impl From<&crate::Oct> for Key {
 }
 
 #[cfg(feature = "rcrypto-rsa")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl TryFrom<&crate::Rsa> for Key {
     type Error = super::Error;
 
@@ -166,10 +153,6 @@ impl TryFrom<&crate::Rsa> for Key {
 }
 
 #[cfg(any(feature = "rcrypto-p256", feature = "rcrypto-p384"))]
-#[cfg_attr(
-    docsrs,
-    doc(cfg(any(feature = "rcrypto-p256", feature = "rcrypto-p384")))
-)]
 impl TryFrom<&crate::Ec> for Key {
     type Error = super::Error;
 

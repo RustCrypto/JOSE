@@ -23,15 +23,12 @@ impl Type for Signing {
     type Oct = Zeroizing<Box<[u8]>>;
 
     #[cfg(feature = "p256")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "p256")))]
     type P256 = p256::ecdsa::SigningKey;
 
     #[cfg(feature = "p384")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "p384")))]
     type P384 = p384::ecdsa::SigningKey;
 
     #[cfg(feature = "rsa")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "rsa")))]
     type Rsa = rsa::RsaPrivateKey;
 }
 
@@ -66,7 +63,6 @@ impl From<Key<Signing>> for Key<Verifying> {
 }
 
 #[cfg(feature = "jwk")]
-#[cfg_attr(docsrs, doc(cfg(feature = "jwk")))]
 impl TryFrom<&crate::jwk::Jwk> for Key<Signing> {
     type Error = Error;
 
@@ -97,7 +93,6 @@ impl TryFrom<&crate::jwk::Jwk> for Key<Signing> {
 }
 
 #[cfg(feature = "jwk")]
-#[cfg_attr(docsrs, doc(cfg(feature = "jwk")))]
 impl TryFrom<&crate::jwk::Jwk> for Key<Verifying> {
     type Error = Error;
 

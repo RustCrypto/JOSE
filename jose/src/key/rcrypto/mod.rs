@@ -4,10 +4,6 @@
 //! Integration with RustCrypto types.
 
 #![cfg(any(feature = "hmac", feature = "p256", feature = "p384", feature = "rsa"))]
-#![cfg_attr(
-    docsrs,
-    doc(cfg(any(feature = "hmac", feature = "p256", feature = "p384", feature = "rsa")))
-)]
 
 use core::convert::Infallible;
 

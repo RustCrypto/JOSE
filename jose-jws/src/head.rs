@@ -28,9 +28,8 @@ pub struct Protected {
     pub crit: Option<Vec<String>>,
 
     /// RFC 8555 Section 6.4.1
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    #[cfg_attr(docsrs, doc(cfg(feature = "url")))]
     #[cfg(feature = "url")]
+    #[serde(skip_serializing_if = "Option::is_none", default)]
     pub url: Option<url::Url>,
 
     /// RFC 8555 Section 6.5.2
@@ -68,9 +67,8 @@ pub struct Unprotected {
     pub alg: Option<Signing>,
 
     /// RFC 7517 Section 4.1.2
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    #[cfg_attr(docsrs, doc(cfg(feature = "url")))]
     #[cfg(feature = "url")]
+    #[serde(skip_serializing_if = "Option::is_none", default)]
     pub jku: Option<url::Url>,
 
     /// RFC 7517 Section 4.1.3

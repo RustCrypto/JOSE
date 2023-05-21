@@ -3,14 +3,11 @@
 
 #![cfg(feature = "rsa")]
 
-use rsa::{PublicKeyParts, RsaPrivateKey, RsaPublicKey};
-
 use super::{Key, Kind, Type};
-
 use crate::alg::{Algorithm, Algorithm::Signing, Signing::*};
 use crate::key::KeyInfo;
+use rsa::{PublicKeyParts, RsaPrivateKey, RsaPublicKey};
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rsa")))]
 impl<T: Type<Rsa = RsaPublicKey>> From<RsaPublicKey> for Key<T> {
     fn from(value: RsaPublicKey) -> Self {
         Self {
@@ -20,7 +17,6 @@ impl<T: Type<Rsa = RsaPublicKey>> From<RsaPublicKey> for Key<T> {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rsa")))]
 impl<T: Type<Rsa = RsaPrivateKey>> From<RsaPrivateKey> for Key<T> {
     fn from(value: RsaPrivateKey) -> Self {
         Self {

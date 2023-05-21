@@ -14,7 +14,6 @@ use super::super::KeyInfo;
 use super::Error;
 use crate::{Rsa, RsaPrivate};
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl KeyInfo for RsaPublicKey {
     fn strength(&self) -> usize {
         self.size() / 16
@@ -43,7 +42,6 @@ impl KeyInfo for RsaPublicKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl KeyInfo for RsaPrivateKey {
     fn strength(&self) -> usize {
         self.size() / 16
@@ -63,7 +61,6 @@ impl KeyInfo for RsaPrivateKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl From<&RsaPublicKey> for Rsa {
     fn from(pk: &RsaPublicKey) -> Self {
         Self {
@@ -74,14 +71,12 @@ impl From<&RsaPublicKey> for Rsa {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl From<RsaPublicKey> for Rsa {
     fn from(sk: RsaPublicKey) -> Self {
         (&sk).into()
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl TryFrom<&Rsa> for RsaPublicKey {
     type Error = Error;
 
@@ -92,7 +87,6 @@ impl TryFrom<&Rsa> for RsaPublicKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl TryFrom<Rsa> for RsaPublicKey {
     type Error = Error;
 
@@ -102,7 +96,6 @@ impl TryFrom<Rsa> for RsaPublicKey {
 }
 
 // TODO: patch rsa crate to export the optional values
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl From<&RsaPrivateKey> for Rsa {
     fn from(pk: &RsaPrivateKey) -> Self {
         Self {
@@ -116,14 +109,12 @@ impl From<&RsaPrivateKey> for Rsa {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl From<RsaPrivateKey> for Rsa {
     fn from(sk: RsaPrivateKey) -> Self {
         (&sk).into()
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl TryFrom<&Rsa> for RsaPrivateKey {
     type Error = Error;
 
@@ -149,7 +140,6 @@ impl TryFrom<&Rsa> for RsaPrivateKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl TryFrom<Rsa> for RsaPrivateKey {
     type Error = Error;
 
