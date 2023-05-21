@@ -3,7 +3,7 @@
 
 use jose_jwa::Algorithm;
 
-use super::super::KeyInfo;
+use super::KeyInfo;
 
 /// The kind of a key (public or private).
 pub enum Kind<P, S> {

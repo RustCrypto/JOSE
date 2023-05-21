@@ -57,7 +57,6 @@ jobs:
           # Test no features, individual features and all features.
           - ""
           - url
-          - rcrypto
           - rcrypto-p256
           - rcrypto-p384
           - rcrypto-rsa

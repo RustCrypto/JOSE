@@ -17,22 +17,21 @@ edition = "2021"
 rust-version = "1.65"
 
 [features]
-rcrypto-p256 = ["rcrypto", "dep:p256"]
-rcrypto-p384 = ["rcrypto", "dep:p384"]
-rcrypto-rsa = ["rcrypto", "dep:rsa"]
-rcrypto = ["dep:zeroize"]
+rcrypto-p256 = ["dep:p256"]
+rcrypto-p384 = ["dep:p384"]
+rcrypto-rsa = ["dep:rsa"]
 
 [dependencies]
 serde = { version = "1.0.160", default-features = false, features = ["alloc", "derive"] }
 jose-jwa = { version = "0.1", path = "../jose-jwa" }
 jose-b64 = { version = "0.1", default-features = false, features = ["secret"], path = "../jose-b64" }
+zeroize = { version = "1.6.0", default-features = false, features = ["alloc"] }
 
 # optional dependencies
 p256 = { version = "0.13.2", default-features = false, optional = true, features = ["arithmetic"] }
 p384 = { version = "0.13.0", default-features = false, optional = true, features = ["arithmetic"] }
 rsa = { version = "0.9", default-features = false, optional = true }
 url = { version = "2.3.1", default-features = false, optional = true, features = ["serde"] }
-zeroize = { version = "1.6.0", default-features = false, optional = true, features = ["alloc"] }
 
 [dev-dependencies]
 serde_json = "1.0.96"

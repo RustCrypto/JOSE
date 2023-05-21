@@ -6,7 +6,7 @@ use alloc::boxed::Box;
 use jose_jwa::Algorithm;
 use zeroize::Zeroizing;
 
-use super::super::KeyInfo;
+use super::KeyInfo;
 
 /// A fully parsed Key that mimics the runtime behavior of a JWK.
 ///

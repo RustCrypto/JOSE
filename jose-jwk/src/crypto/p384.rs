@@ -8,8 +8,8 @@ use p384::{EncodedPoint, FieldBytes, PublicKey, SecretKey};
 
 use jose_jwa::{Algorithm, Algorithm::Signing, Signing::*};
 
-use super::super::KeyInfo;
 use super::Error;
+use super::KeyInfo;
 use crate::{Ec, EcCurves};
 
 impl KeyInfo for PublicKey {
