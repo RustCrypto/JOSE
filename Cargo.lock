@@ -184,7 +184,7 @@ version = "0.0.0"
 
 [[package]]
 name = "jose-jwk"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "jose-b64",
  "jose-jwa",
