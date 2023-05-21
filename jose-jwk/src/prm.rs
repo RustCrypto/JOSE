@@ -35,7 +35,6 @@ pub struct Parameters {
 
     /// The URL of the X.509 certificate associated with this key.
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    #[cfg_attr(docsrs, doc(cfg(feature = "url")))]
     #[cfg(feature = "url")]
     pub x5u: Option<url::Url>,
 

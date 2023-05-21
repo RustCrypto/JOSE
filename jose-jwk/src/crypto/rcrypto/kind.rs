@@ -31,7 +31,6 @@ impl<P: KeyInfo, S: KeyInfo> KeyInfo for Kind<P, S> {
 }
 
 #[cfg(feature = "rcrypto-rsa")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl From<&Kind<rsa::RsaPublicKey, rsa::RsaPrivateKey>> for crate::Rsa {
     fn from(value: &Kind<rsa::RsaPublicKey, rsa::RsaPrivateKey>) -> Self {
         match value {
@@ -42,7 +41,6 @@ impl From<&Kind<rsa::RsaPublicKey, rsa::RsaPrivateKey>> for crate::Rsa {
 }
 
 #[cfg(feature = "rcrypto-rsa")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-rsa")))]
 impl TryFrom<&crate::Rsa> for Kind<rsa::RsaPublicKey, rsa::RsaPrivateKey> {
     type Error = super::Error;
 
@@ -56,7 +54,6 @@ impl TryFrom<&crate::Rsa> for Kind<rsa::RsaPublicKey, rsa::RsaPrivateKey> {
 }
 
 #[cfg(feature = "rcrypto-p256")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl From<&Kind<p256::PublicKey, p256::SecretKey>> for crate::Ec {
     fn from(value: &Kind<p256::PublicKey, p256::SecretKey>) -> Self {
         match value {
@@ -67,7 +64,6 @@ impl From<&Kind<p256::PublicKey, p256::SecretKey>> for crate::Ec {
 }
 
 #[cfg(feature = "rcrypto-p256")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl TryFrom<&crate::Ec> for Kind<p256::PublicKey, p256::SecretKey> {
     type Error = super::Error;
 
@@ -81,7 +77,6 @@ impl TryFrom<&crate::Ec> for Kind<p256::PublicKey, p256::SecretKey> {
 }
 
 #[cfg(feature = "rcrypto-p384")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl From<&Kind<p384::PublicKey, p384::SecretKey>> for crate::Ec {
     fn from(value: &Kind<p384::PublicKey, p384::SecretKey>) -> Self {
         match value {
@@ -92,7 +87,6 @@ impl From<&Kind<p384::PublicKey, p384::SecretKey>> for crate::Ec {
 }
 
 #[cfg(feature = "rcrypto-p384")]
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p384")))]
 impl TryFrom<&crate::Ec> for Kind<p384::PublicKey, p384::SecretKey> {
     type Error = super::Error;
 

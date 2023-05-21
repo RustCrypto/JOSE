@@ -12,7 +12,6 @@ use super::super::KeyInfo;
 use super::Error;
 use crate::{Ec, EcCurves};
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl KeyInfo for PublicKey {
     fn strength(&self) -> usize {
         16
@@ -23,7 +22,6 @@ impl KeyInfo for PublicKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl KeyInfo for SecretKey {
     fn strength(&self) -> usize {
         16
@@ -34,7 +32,6 @@ impl KeyInfo for SecretKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl From<&PublicKey> for Ec {
     fn from(pk: &PublicKey) -> Self {
         let ep = pk.to_encoded_point(false);
@@ -48,14 +45,12 @@ impl From<&PublicKey> for Ec {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl From<PublicKey> for Ec {
     fn from(sk: PublicKey) -> Self {
         (&sk).into()
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl TryFrom<&Ec> for PublicKey {
     type Error = Error;
 
@@ -82,7 +77,6 @@ impl TryFrom<&Ec> for PublicKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl TryFrom<Ec> for PublicKey {
     type Error = Error;
 
@@ -91,7 +85,6 @@ impl TryFrom<Ec> for PublicKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl From<&SecretKey> for Ec {
     fn from(sk: &SecretKey) -> Self {
         let mut key: Self = sk.public_key().into();
@@ -100,14 +93,12 @@ impl From<&SecretKey> for Ec {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl From<SecretKey> for Ec {
     fn from(sk: SecretKey) -> Self {
         (&sk).into()
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl TryFrom<&Ec> for SecretKey {
     type Error = Error;
 
@@ -124,7 +115,6 @@ impl TryFrom<&Ec> for SecretKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rcrypto-p256")))]
 impl TryFrom<Ec> for SecretKey {
     type Error = Error;
 

@@ -23,7 +23,6 @@ use super::Bytes;
 ///   2. Its contents are not printed in the debug formatter.
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(transparent)]
-#[cfg_attr(docsrs, doc(cfg(feature = "secret")))]
 #[serde(bound(serialize = "Bytes<T, E>: Serialize"))]
 #[serde(bound(deserialize = "Bytes<T, E>: Deserialize<'de>"))]
 pub struct Secret<T: Zeroize = Box<[u8]>, E = Base64UrlUnpadded>(Zeroizing<Bytes<T, E>>);

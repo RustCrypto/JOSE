@@ -14,7 +14,6 @@ use crate::alg::{Algorithm, Signing as Sign, Signing::*};
 use crate::key::rcrypto::Error;
 use crate::key::KeyInfo;
 
-#[cfg_attr(docsrs, doc(cfg(feature = "hmac")))]
 impl<'a> CoreVerifyingKey<'a> for [u8] {
     type StartError = Error;
     type Finish = State<'a, Verifying>;
@@ -33,7 +32,6 @@ impl<'a> CoreVerifyingKey<'a> for [u8] {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "hmac")))]
 impl<'a> CoreSigningKey<'a> for [u8] {
     type StartError = Error;
     type Finish = State<'a, Signing>;

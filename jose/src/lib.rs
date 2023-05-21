@@ -3,11 +3,18 @@
 
 //! JOSE: JSON Object Signing & Encryption
 
-#![warn(rust_2018_idioms, unused_lifetimes, unused_qualifications, clippy::all)]
-#![forbid(unsafe_code, clippy::expect_used, clippy::panic)]
-#![cfg_attr(docsrs, feature(doc_cfg))]
-#![deny(missing_docs)]
 #![no_std]
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![deny()]
+#![forbid(unsafe_code)]
+#![warn(
+    clippy::expect_used,
+    clippy::panic,
+    missing_docs,
+    rust_2018_idioms,
+    unused_lifetimes,
+    unused_qualifications
+)]
 
 extern crate alloc;
 

@@ -12,7 +12,6 @@ use crate::alg::{Algorithm, Signing as Sign, Signing::*};
 use crate::key::rcrypto::Error;
 use crate::key::KeyInfo;
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rsa")))]
 impl<'a> CoreVerifyingKey<'a> for RsaPublicKey {
     type StartError = Error;
     type Finish = State<'a, Verifying>;
@@ -39,7 +38,6 @@ impl<'a> CoreVerifyingKey<'a> for RsaPublicKey {
     }
 }
 
-#[cfg_attr(docsrs, doc(cfg(feature = "rsa")))]
 impl<'a> CoreSigningKey<'a> for RsaPrivateKey {
     type StartError = Error;
     type Finish = State<'a, Signing>;

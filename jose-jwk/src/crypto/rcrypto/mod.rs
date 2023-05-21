@@ -4,7 +4,6 @@
 //! Integration with RustCrypto types
 
 #![cfg(feature = "rcrypto")]
-#![cfg_attr(docsrs, doc(cfg(feature = "rcrypto")))]
 
 mod key;
 mod kind;
