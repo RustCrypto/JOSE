@@ -17,12 +17,12 @@ edition = "2021"
 rust-version = "1.65"
 
 [dependencies]
+jose-b64 = { version = "0.1", default-features = false, features = ["json"], path = "../jose-b64" }
+jose-jwa = { version = "0.1", path = "../jose-jwa" }
+jose-jwk = { path = "../jose-jwk", default-features = false }
 serde = { version = "1.0.160", default-features = false, features = ["alloc", "derive"] }
 serde_json = { version = "1.0.96", default-features = false }
 rand_core = { version = "0.6.4", default-features = false }
-jose-b64 = { version = "0.1", default-features = false, features = ["json"], path = "../jose-b64" }
-jose-jwk = { path = "../jose-jwk", default-features = false }
-jose-jwa = { path = "../jose-jwa" }
 
 [package.metadata.docs.rs]
 all-features = true
