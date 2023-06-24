@@ -30,7 +30,7 @@ pub use head::{Protected, Unprotected};
 
 use alloc::{vec, vec::Vec};
 
-use jose_b64::serde::{Bytes, Json};
+use jose_b64::{B64Bytes, Json};
 use serde::{Deserialize, Serialize};
 
 /// A JSON Web Signature representation
@@ -79,7 +79,7 @@ impl From<Flattened> for Jws {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct General {
     /// The payload of the signature.
-    pub payload: Option<Bytes>,
+    pub payload: Option<B64Bytes>,
 
     /// The signatures over the payload.
     pub signatures: Vec<Signature>,
@@ -110,7 +110,7 @@ impl From<Flattened> for General {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Flattened {
     /// The payload of the signature.
-    pub payload: Option<Bytes>,
+    pub payload: Option<B64Bytes>,
 
     /// The signature over the payload.
     #[serde(flatten)]
@@ -127,5 +127,5 @@ pub struct Signature {
     pub protected: Option<Json<Protected>>,
 
     /// The Signature Bytes
-    pub signature: Bytes,
+    pub signature: B64Bytes,
 }
