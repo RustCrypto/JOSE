@@ -8,7 +8,7 @@ use rsa::{
     BigUint, RsaPrivateKey, RsaPublicKey,
 };
 
-use jose_jwa::{Algorithm, Algorithm::Signing, Signing::*};
+use jose_jwa::{Algorithm, Algorithm::Signing, Signing as S};
 
 use super::Error;
 use super::KeyInfo;
@@ -31,12 +31,12 @@ impl KeyInfo for RsaPublicKey {
 
         #[allow(clippy::match_like_matches_macro)]
         match algo {
-            Signing(Rs256) => true,
-            Signing(Rs384) => true,
-            Signing(Rs512) => true,
-            Signing(Ps256) => true,
-            Signing(Ps384) => true,
-            Signing(Ps512) => true,
+            Signing(S::Rs256) => true,
+            Signing(S::Rs384) => true,
+            Signing(S::Rs512) => true,
+            Signing(S::Ps256) => true,
+            Signing(S::Ps384) => true,
+            Signing(S::Ps512) => true,
             _ => false,
         }
     }
@@ -50,12 +50,12 @@ impl KeyInfo for RsaPrivateKey {
     fn is_supported(&self, algo: &Algorithm) -> bool {
         #[allow(clippy::match_like_matches_macro)]
         match (algo, self.strength()) {
-            (Signing(Rs256), 16..) => true,
-            (Signing(Rs384), 24..) => true,
-            (Signing(Rs512), 32..) => true,
-            (Signing(Ps256), 16..) => true,
-            (Signing(Ps384), 24..) => true,
-            (Signing(Ps512), 32..) => true,
+            (Signing(S::Rs256), 16..) => true,
+            (Signing(S::Rs384), 24..) => true,
+            (Signing(S::Rs512), 32..) => true,
+            (Signing(S::Ps256), 16..) => true,
+            (Signing(S::Ps384), 24..) => true,
+            (Signing(S::Ps512), 32..) => true,
             _ => false,
         }
     }

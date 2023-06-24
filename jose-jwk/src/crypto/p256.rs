@@ -6,7 +6,7 @@
 use p256::elliptic_curve::sec1::{FromEncodedPoint, ToEncodedPoint};
 use p256::{EncodedPoint, FieldBytes, PublicKey, SecretKey};
 
-use jose_jwa::{Algorithm, Algorithm::Signing, Signing::*};
+use jose_jwa::{Algorithm, Algorithm::Signing, Signing as S};
 
 use super::Error;
 use super::KeyInfo;
@@ -18,7 +18,7 @@ impl KeyInfo for PublicKey {
     }
 
     fn is_supported(&self, algo: &Algorithm) -> bool {
-        matches!(algo, Signing(Es256))
+        matches!(algo, Signing(S::Es256))
     }
 }
 
@@ -28,7 +28,7 @@ impl KeyInfo for SecretKey {
     }
 
     fn is_supported(&self, algo: &Algorithm) -> bool {
-        matches!(algo, Signing(Es256))
+        matches!(algo, Signing(S::Es256))
     }
 }
 
