@@ -23,7 +23,7 @@ base64ct = { version = "1.6.0", default-features = false, features = ["alloc"] }
 # optional dependencies
 serde = { version = "1.0.160", default-features = false, optional = true, features = ["alloc", "derive"] }
 zeroize = { version = "1.6.0", default-features = false, optional = true, features = ["alloc", "serde"] }
-serde_json = { version = "1.0.96", default-features = false, optional = true, features = ["alloc"] }
+serde_json = { version = "1.0.99", default-features = false, optional = true, features = ["alloc"] }
 subtle = { version = "2.5.0", default-features = false, optional = true }
 
 [package.metadata.docs.rs]

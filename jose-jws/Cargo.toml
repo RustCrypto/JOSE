@@ -21,7 +21,7 @@ jose-b64 = { version = "0.1", default-features = false, features = ["json"], pat
 jose-jwa = { version = "0.1", path = "../jose-jwa" }
 jose-jwk = { version = "0.1", default-features = false, path = "../jose-jwk" }
 serde = { version = "1.0.160", default-features = false, features = ["alloc", "derive"] }
-serde_json = { version = "1.0.96", default-features = false }
+serde_json = { version = "1.0.99", default-features = false }
 rand_core = { version = "0.6.4", default-features = false }
 
 [package.metadata.docs.rs]
