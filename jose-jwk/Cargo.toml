@@ -33,7 +33,7 @@ rsa = { version = "0.9", default-features = false, optional = true }
 url = { version = "2.3.1", default-features = false, optional = true, features = ["serde"] }
 
 [dev-dependencies]
-serde_json = "1.0.96"
+serde_json = "1.0.100"
 
 [package.metadata.docs.rs]
 all-features = true
