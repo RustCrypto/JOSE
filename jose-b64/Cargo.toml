@@ -1,6 +1,6 @@
 [package]
 name = "jose-b64"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["RustCrypto Developers"]
 license = "Apache-2.0 OR MIT"
 description = "Base64 utilities for use in JOSE crates"
