@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.1.2 (2023-08-21)
 ### Changed
-- Set min version of `serde` to 1.0.184 ([#56])
+- Set min version of `serde` to 1.0.185 ([#56])
 
 [#56]: https://github.com/RustCrypto/JOSE/pull/56
 
