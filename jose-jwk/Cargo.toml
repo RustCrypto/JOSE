@@ -23,8 +23,7 @@ crypto = ["p256", "p384", "rsa"]
 [dependencies]
 jose-b64 = { version = "0.1", default-features = false, features = ["secret"], path = "../jose-b64" }
 jose-jwa = { version = "0.1", path = "../jose-jwa" }
-# Pin upper version of serde to work around https://github.com/serde-rs/serde/issues/2538
-serde = { version = "1.0.160, <1.0.172", default-features = false, features = ["alloc", "derive"] }
+serde = { version = "1.0.185", default-features = false, features = ["alloc", "derive"] }
 zeroize = { version = "1.6.0", default-features = false, features = ["alloc"] }
 
 # optional dependencies
