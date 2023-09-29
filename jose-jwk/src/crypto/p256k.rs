@@ -10,7 +10,7 @@ use k256::{EncodedPoint, FieldBytes, PublicKey, SecretKey};
 
 impl KeyInfo for PublicKey {
     fn strength(&self) -> usize {
-        todo!()
+        128
     }
 
     fn is_supported(&self, algo: &Algorithm) -> bool {
@@ -20,7 +20,7 @@ impl KeyInfo for PublicKey {
 
 impl KeyInfo for SecretKey {
     fn strength(&self) -> usize {
-        todo!()
+        128
     }
 
     fn is_supported(&self, algo: &Algorithm) -> bool {
