@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2022 Profian Inc. <opensource@profian.com>
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+//! When the zeroize crate is not used (`secret` feature is not enabled), this
+//! implements the required zeroize trait in a non-secret way
+
 #![cfg(not(feature = "secret"))]
 
 use core::ops::{Deref, DerefMut};

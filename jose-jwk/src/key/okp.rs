@@ -5,7 +5,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use jose_b64::serde::{Bytes, Secret};
+use jose_b64::{B64Bytes, B64Secret};
 
 /// A octet key pair CFRG-curve key, as defined in [RFC 8037]
 ///
@@ -16,11 +16,11 @@ pub struct Okp {
     pub crv: OkpCurves,
 
     /// The public key.
-    pub x: Bytes,
+    pub x: B64Bytes,
 
     /// The private key.
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub d: Option<Secret>,
+    pub d: Option<B64Secret>,
 }
 
 /// The CFRG Curve.

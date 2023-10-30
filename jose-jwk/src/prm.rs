@@ -11,7 +11,7 @@ use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
 use jose_b64::base64ct::Base64;
-use jose_b64::serde::Bytes;
+use jose_b64::B64Bytes;
 use jose_jwa::Algorithm;
 
 /// JWK parameters unrelated to the key implementation
@@ -40,7 +40,7 @@ pub struct Parameters {
 
     /// The X.509 certificate associated with this key.
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub x5c: Option<Vec<Bytes<Box<[u8]>, Base64>>>, // base64, not base64url
+    pub x5c: Option<Vec<B64Bytes<Box<[u8]>, Base64>>>, // base64, not base64url
 
     /// The X.509 thumbprint associated with this key.
     #[serde(flatten)]
@@ -98,9 +98,9 @@ pub enum Operations {
 pub struct Thumbprint {
     /// An X.509 thumbprint (SHA-1).
     #[serde(skip_serializing_if = "Option::is_none", rename = "x5t", default)]
-    pub s1: Option<Bytes<[u8; 20]>>,
+    pub s1: Option<B64Bytes<[u8; 20]>>,
 
     /// An X.509 thumbprint (SHA-2 256).
     #[serde(skip_serializing_if = "Option::is_none", rename = "x5t#S256", default)]
-    pub s256: Option<Bytes<[u8; 32]>>,
+    pub s256: Option<B64Bytes<[u8; 32]>>,
 }

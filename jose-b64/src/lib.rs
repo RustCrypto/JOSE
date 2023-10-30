@@ -21,15 +21,25 @@
 
 extern crate alloc;
 
-pub mod serde;
+mod fake_zeroize;
 pub mod stream;
-
-mod zero;
+mod wrapper_bytes;
+mod wrapper_json;
+mod wrapper_secret;
 
 pub use base64ct;
+
+#[cfg(feature = "serde")]
+pub use wrapper_bytes::B64Bytes;
+
+#[cfg(feature = "secret")]
+pub use wrapper_secret::B64Secret;
+
+#[cfg(feature = "json")]
+pub use wrapper_json::Json;
 
 #[cfg(feature = "secret")]
 use zeroize::{Zeroize, Zeroizing};
 
 #[cfg(not(feature = "secret"))]
-use zero::{Zeroize, Zeroizing};
+use fake_zeroize::{Zeroize, Zeroizing};
