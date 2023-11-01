@@ -7,6 +7,7 @@ mod key;
 mod keyinfo;
 mod kind;
 mod p256;
+mod p256k;
 mod p384;
 mod rsa;
 

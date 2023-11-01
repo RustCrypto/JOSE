@@ -10,7 +10,12 @@ RFC7517
 """
 documentation = "https://docs.rs/jose-jwk"
 repository = "https://github.com/RustCrypto/JOSE/tree/master/jose-jwk"
-categories = ["cryptography", "data-structures", "encoding", "parser-implementations"]
+categories = [
+    "cryptography",
+    "data-structures",
+    "encoding",
+    "parser-implementations",
+]
 keywords = ["json", "jose"]
 readme = "README.md"
 edition = "2021"
@@ -18,19 +23,34 @@ rust-version = "1.65"
 
 [features]
 default = ["crypto"]
-crypto = ["p256", "p384", "rsa"]
+crypto = ["p256", "p384", "rsa", "k256"]
 
 [dependencies]
-jose-b64 = { version = "0.1", default-features = false, features = ["secret"], path = "../jose-b64" }
+jose-b64 = { version = "0.1", default-features = false, features = [
+    "secret",
+], path = "../jose-b64" }
 jose-jwa = { version = "0.1", path = "../jose-jwa" }
-serde = { version = "1.0.185", default-features = false, features = ["alloc", "derive"] }
+serde = { version = "1.0.185", default-features = false, features = [
+    "alloc",
+    "derive",
+] }
 zeroize = { version = "1.6.0", default-features = false, features = ["alloc"] }
 
 # optional dependencies
-p256 = { version = "0.13.2", default-features = false, optional = true, features = ["arithmetic"] }
-p384 = { version = "0.13.0", default-features = false, optional = true, features = ["arithmetic"] }
+p256 = { version = "0.13.2", default-features = false, optional = true, features = [
+    "arithmetic",
+] }
+p384 = { version = "0.13.0", default-features = false, optional = true, features = [
+    "arithmetic",
+] }
+
+k256 = { version = "0.13.1", default-features = false, optional = true, features = [
+    "default",
+] }
 rsa = { version = "0.9", default-features = false, optional = true }
-url = { version = "2.4.1", default-features = false, optional = true, features = ["serde"] }
+url = { version = "2.4.1", default-features = false, optional = true, features = [
+    "serde",
+] }
 
 [dev-dependencies]
 serde_json = "1.0.96"
