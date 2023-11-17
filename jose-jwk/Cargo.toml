@@ -18,7 +18,7 @@ rust-version = "1.65"
 
 [features]
 default = ["crypto"]
-crypto = ["p256", "p384", "rsa"]
+crypto = ["p256", "p384", "p521", "rsa"]
 
 [dependencies]
 jose-b64 = { version = "0.1", default-features = false, features = ["secret"], path = "../jose-b64" }
@@ -29,6 +29,7 @@ zeroize = { version = "1.6.0", default-features = false, features = ["alloc"] }
 # optional dependencies
 p256 = { version = "0.13.2", default-features = false, optional = true, features = ["arithmetic"] }
 p384 = { version = "0.13.0", default-features = false, optional = true, features = ["arithmetic"] }
+p521 = { version = "0.13.3", default-features = false, optional = true, features = ["arithmetic"]}
 rsa = { version = "0.9", default-features = false, optional = true }
 url = { version = "2.4.1", default-features = false, optional = true, features = ["serde"] }
 
