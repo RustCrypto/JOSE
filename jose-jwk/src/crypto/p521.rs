@@ -18,7 +18,7 @@ impl KeyInfo for PublicKey {
     }
 
     fn is_supported(&self, algo: &Algorithm) -> bool {
-        matches!(algo, Signing(Es384))
+        matches!(algo, Signing(Es512))
     }
 }
 
@@ -28,7 +28,7 @@ impl KeyInfo for SecretKey {
     }
 
     fn is_supported(&self, algo: &Algorithm) -> bool {
-        matches!(algo, Signing(Es384))
+        matches!(algo, Signing(Es512))
     }
 }
 
