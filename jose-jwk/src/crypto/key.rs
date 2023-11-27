@@ -38,7 +38,6 @@ pub enum Key {
     /// A P-521 key
     #[cfg(feature = "p521")]
     P521(super::Kind<p521::PublicKey, p521::SecretKey>),
-
 }
 
 impl KeyInfo for Key {
@@ -74,7 +73,7 @@ impl KeyInfo for Key {
             Self::P384(k) => k.is_supported(algo),
 
             #[cfg(feature = "p521")]
-            Self::P521(k) => k.is_supported(algo)
+            Self::P521(k) => k.is_supported(algo),
         }
     }
 }
@@ -168,7 +167,6 @@ impl From<p521::SecretKey> for Key {
         Self::P521(super::Kind::Secret(value))
     }
 }
-
 
 impl From<&crate::Oct> for Key {
     fn from(value: &crate::Oct) -> Self {
