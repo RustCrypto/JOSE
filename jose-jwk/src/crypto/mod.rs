@@ -8,6 +8,7 @@ mod keyinfo;
 mod kind;
 mod p256;
 mod p384;
+mod p521;
 mod rsa;
 
 pub use key::Key;

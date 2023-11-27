@@ -34,6 +34,10 @@ pub enum Key {
     /// A P-384 key.
     #[cfg(feature = "p384")]
     P384(super::Kind<p384::PublicKey, p384::SecretKey>),
+
+    /// A P-521 key
+    #[cfg(feature = "p521")]
+    P521(super::Kind<p521::PublicKey, p521::SecretKey>),
 }
 
 impl KeyInfo for Key {
@@ -49,6 +53,9 @@ impl KeyInfo for Key {
 
             #[cfg(feature = "p384")]
             Self::P384(k) => k.strength(),
+
+            #[cfg(feature = "p521")]
+            Self::P521(k) => k.strength(),
         }
     }
 
@@ -64,6 +71,9 @@ impl KeyInfo for Key {
 
             #[cfg(feature = "p384")]
             Self::P384(k) => k.is_supported(algo),
+
+            #[cfg(feature = "p521")]
+            Self::P521(k) => k.is_supported(algo),
         }
     }
 }
@@ -137,6 +147,27 @@ impl From<p384::SecretKey> for Key {
     }
 }
 
+#[cfg(feature = "p521")]
+impl From<super::Kind<p521::PublicKey, p521::SecretKey>> for Key {
+    fn from(value: super::Kind<p521::PublicKey, p521::SecretKey>) -> Self {
+        Self::P521(value)
+    }
+}
+
+#[cfg(feature = "p521")]
+impl From<p521::PublicKey> for Key {
+    fn from(value: p521::PublicKey) -> Self {
+        Self::P521(super::Kind::Public(value))
+    }
+}
+
+#[cfg(feature = "p521")]
+impl From<p521::SecretKey> for Key {
+    fn from(value: p521::SecretKey) -> Self {
+        Self::P521(super::Kind::Secret(value))
+    }
+}
+
 impl From<&crate::Oct> for Key {
     fn from(value: &crate::Oct) -> Self {
         Self::Oct(value.k.to_vec().into_boxed_slice().into())
@@ -152,7 +183,7 @@ impl TryFrom<&crate::Rsa> for Key {
     }
 }
 
-#[cfg(any(feature = "p256", feature = "p384"))]
+#[cfg(any(feature = "p256", feature = "p384", feature = "p521"))]
 impl TryFrom<&crate::Ec> for Key {
     type Error = super::Error;
 
@@ -163,6 +194,9 @@ impl TryFrom<&crate::Ec> for Key {
 
             #[cfg(feature = "p384")]
             crate::EcCurves::P384 => Ok(Self::P384(value.try_into()?)),
+
+            #[cfg(feature = "p521")]
+            crate::EcCurves::P521 => Ok(Self::P521(value.try_into()?)),
 
             _ => Err(super::Error::Unsupported),
         }
@@ -179,7 +213,7 @@ impl TryFrom<&crate::Key> for Key {
             #[cfg(feature = "rsa")]
             crate::Key::Rsa(rsa) => rsa.try_into(),
 
-            #[cfg(any(feature = "p256", feature = "p384"))]
+            #[cfg(any(feature = "p256", feature = "p384", feature = "p521"))]
             crate::Key::Ec(ec) => ec.try_into(),
 
             _ => Err(super::Error::Unsupported),
@@ -208,6 +242,12 @@ impl From<&Key> for crate::Key {
 
             #[cfg(feature = "p384")]
             Key::P384(kind) => match kind {
+                super::Kind::Public(public) => Self::Ec(public.into()),
+                super::Kind::Secret(secret) => Self::Ec(secret.into()),
+            },
+
+            #[cfg(feature = "p521")]
+            Key::P521(kind) => match kind {
                 super::Kind::Public(public) => Self::Ec(public.into()),
                 super::Kind::Secret(secret) => Self::Ec(secret.into()),
             },

@@ -98,3 +98,26 @@ impl TryFrom<&crate::Ec> for Kind<p384::PublicKey, p384::SecretKey> {
         }
     }
 }
+
+#[cfg(feature = "p521")]
+impl From<&Kind<p521::PublicKey, p521::SecretKey>> for crate::Ec {
+    fn from(value: &Kind<p521::PublicKey, p521::SecretKey>) -> Self {
+        match value {
+            Kind::Public(key) => key.into(),
+            Kind::Secret(key) => key.into(),
+        }
+    }
+}
+
+#[cfg(feature = "p521")]
+impl TryFrom<&crate::Ec> for Kind<p521::PublicKey, p521::SecretKey> {
+    type Error = super::Error;
+
+    fn try_from(value: &crate::Ec) -> Result<Self, Self::Error> {
+        if value.d.is_none() {
+            Ok(Kind::Public(value.try_into()?))
+        } else {
+            Ok(Kind::Secret(value.try_into()?))
+        }
+    }
+}
