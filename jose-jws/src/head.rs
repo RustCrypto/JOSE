@@ -5,7 +5,7 @@ use alloc::vec::Vec;
 use alloc::{boxed::Box, string::String};
 
 use jose_b64::base64ct::Base64;
-use jose_b64::serde::Bytes;
+use jose_b64::B64Bytes;
 use jose_jwa::Signing;
 use jose_jwk::{Jwk, Thumbprint};
 use serde::{Deserialize, Serialize};
@@ -34,7 +34,7 @@ pub struct Protected {
 
     /// RFC 8555 Section 6.5.2
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub nonce: Option<Bytes>,
+    pub nonce: Option<B64Bytes>,
 
     /// RFC 7797 Section 3
     #[serde(skip_serializing_if = "b64_serialize", default = "b64_default")]
@@ -86,7 +86,7 @@ pub struct Unprotected {
 
     /// RFC 7515 Section 4.1.6
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub x5c: Option<Vec<Bytes<Box<[u8]>, Base64>>>, // base64, not base64url
+    pub x5c: Option<Vec<B64Bytes<Box<[u8]>, Base64>>>, // base64, not base64url
 
     /// RFC 7515 Section 4.1.7-8
     #[serde(flatten)]

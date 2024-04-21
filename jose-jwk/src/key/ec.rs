@@ -5,7 +5,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use jose_b64::serde::{Bytes, Secret};
+use jose_b64::{B64Bytes, B64Secret};
 
 /// An elliptic-curve key.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -14,14 +14,14 @@ pub struct Ec {
     pub crv: EcCurves,
 
     /// The public x coordinate.
-    pub x: Bytes,
+    pub x: B64Bytes,
 
     /// The public y coordinate.
-    pub y: Bytes,
+    pub y: B64Bytes,
 
     /// The private key.
     #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub d: Option<Secret>,
+    pub d: Option<B64Secret>,
 }
 
 /// The elliptic curve.

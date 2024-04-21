@@ -17,6 +17,57 @@ include:
 
 [Documentation][docs-link]
 
+## Crate features
+
+- `secret`: This feature enables constant time operations (via `subtle`) and
+  memory zeroization (via `zeroize`) for secure use of Base64. This feature is
+  enabled by default.
+- `serde`: Enable wrapper types usable with `serde`
+- `json`: Enable a wrapper type for nested b64 serialization within JSON
+
+## Examples
+
+```rust
+# #[cfg(all(feature = "json", feature = "secret"))] {
+use std::str::FromStr;
+
+use serde::{Deserialize, Serialize};
+use jose_b64::{B64Bytes, Json, B64Secret};
+
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
+struct Inner {
+    name: String,
+    value: u64
+}
+
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
+struct Data {
+    /// Base64-encoded data
+    unsecure: B64Bytes<Vec<u8>>,
+    /// JSON embedded as base64
+    inner: Json<Inner>,
+    /// Base64-encoded data, to be serialized/deserialized securely
+    secret: B64Secret<Vec<u8>>
+}
+
+let input = r#"{
+   "unsecure": "SGVsbG8gd29ybGQh",
+   "inner": "eyJuYW1lIjoiYmFyIiwidmFsdWUiOjEyMzQ1Nn0",
+   "secret": "dG9wIHNlY3JldA"
+}"#;
+
+let decoded: Data = serde_json::from_str(input).unwrap();
+
+let expected = Data {
+    unsecure: Vec::from(b"Hello world!".as_slice()).into(),
+    inner: Json::new(Inner { name: String::from("bar"), value: 123456 }).unwrap(),
+    secret: Vec::from(b"top secret".as_slice()).into()
+};
+
+assert_eq!(expected, decoded);
+# }
+```
+
 ## Minimum Supported Rust Version
 
 This crate requires **Rust 1.65** at a minimum.
