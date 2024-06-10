@@ -9,7 +9,8 @@ Javascript Object Signing and Encryption (JOSE) specification as described in
 RFC7519
 """
 documentation = "https://docs.rs/jose-jwt"
-repository = "https://github.com/RustCrypto/JOSE/tree/master/jose-jwt"
+homepage = "https://github.com/RustCrypto/JOSE/tree/master/jose-jwt"
+repository = "https://github.com/RustCrypto/JOSE"
 categories = ["cryptography", "data-structures", "encoding", "parser-implementations"]
 keywords = ["json", "jose"]
 readme = "README.md"
