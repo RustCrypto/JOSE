@@ -3,8 +3,6 @@
 
 //! JWS Cryptographic Implementation
 
-mod core;
-
 use alloc::{vec, vec::Vec};
 
 use jose_b64::stream::Update;

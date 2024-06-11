@@ -5,6 +5,7 @@
 
 use core::ops::{Deref, DerefMut};
 
+#[allow(dead_code)]
 pub trait Zeroize {
     fn zeroize(&mut self);
 }
