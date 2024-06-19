@@ -12,7 +12,7 @@ use jose_jwa::{Algorithm, Algorithm::Signing, Signing::*};
 
 use super::Error;
 use super::KeyInfo;
-use crate::{Rsa, RsaPrivate};
+use crate::{Rsa, RsaOptional, RsaPrivate};
 
 impl KeyInfo for RsaPublicKey {
     fn strength(&self) -> usize {
@@ -95,15 +95,22 @@ impl TryFrom<Rsa> for RsaPublicKey {
     }
 }
 
-// TODO: patch rsa crate to export the optional values
 impl From<&RsaPrivateKey> for Rsa {
     fn from(pk: &RsaPrivateKey) -> Self {
+        let opt = Some(RsaOptional {
+            p: pk.primes()[0].to_bytes_be().into(),
+            q: pk.primes()[1].to_bytes_be().into(),
+            dp: pk.dp().expect("unreachable").to_bytes_be().into(),
+            dq: pk.dq().expect("unreachable").to_bytes_be().into(),
+            qi: pk.qinv().expect("unreachable").to_bytes_be().1.into(),
+            oth: alloc::vec![],
+        });
         Self {
             n: pk.n().to_bytes_be().into(),
             e: pk.e().to_bytes_be().into(),
             prv: Some(RsaPrivate {
                 d: pk.d().to_bytes_be().into(),
-                opt: None,
+                opt,
             }),
         }
     }
