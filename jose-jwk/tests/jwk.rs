@@ -132,7 +132,7 @@ mod rfc7517 {
                     "qi":"GyM_p6JrXySiz1toFgKbWV-JdI3jQ4ypu9rbMWx3rQJBfmt0FoYzgUIZEVFEcOqwemRN81zoDAaa-Bk0KWNGDjJHZDdDmFhW3AN7lI-puxk_mHZGJ11rxyR8O55XLSe3SPmRfKwZI6yU24ZxvQKFYItdldUKGzO6Ia6zTKhAVRU",
                     "alg":"RS256",
                     "kid":"2011-04-29"
-                }
+                },
             ]
         });
 
@@ -306,10 +306,7 @@ mod rfc7517 {
         #[cfg(feature = "rsa")]
         if let Key::Rsa(key) = &jwk.keys[1].key {
             let pk = ::rsa::RsaPrivateKey::try_from(key).unwrap();
-            // FIXME: work around the serialization asymmetry.
-            let mut k: Rsa = pk.into();
-            k.prv.as_mut().unwrap().opt = key.prv.as_ref().unwrap().opt.clone();
-            assert_eq!(key, &k);
+            assert_eq!(key, &pk.into());
         } else {
             unreachable!()
         }
