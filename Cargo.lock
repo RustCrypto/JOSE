@@ -36,6 +36,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
 
 [[package]]
+name = "cfg-if"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
+
+[[package]]
 name = "const-oid"
 version = "0.9.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -86,9 +92,9 @@ dependencies = [
 
 [[package]]
 name = "elliptic-curve"
-version = "0.13.7"
+version = "0.13.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9775b22bc152ad86a0cf23f0f348b884b26add12bf741e7ffc4d4ab2ab4d205"
+checksum = "b5e6043086bf7973472e0c7dff2142ea0b680d30e18d9cc40f267efbf222bd47"
 dependencies = [
  "base16ct",
  "crypto-bigint",
@@ -188,6 +194,7 @@ version = "0.1.2"
 dependencies = [
  "jose-b64",
  "jose-jwa",
+ "k256",
  "p256",
  "p384",
  "p521",
@@ -213,6 +220,16 @@ dependencies = [
 [[package]]
 name = "jose-jwt"
 version = "0.0.0"
+
+[[package]]
+name = "k256"
+version = "0.13.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "956ff9b67e26e1a6a866cb758f12c6f8746208489e3e4a4b5580802f2f0a587b"
+dependencies = [
+ "cfg-if",
+ "elliptic-curve",
+]
 
 [[package]]
 name = "lazy_static"

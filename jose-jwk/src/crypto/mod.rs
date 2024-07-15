@@ -3,6 +3,7 @@
 
 //! Cryptographic primitives for JWK
 
+mod k256;
 mod key;
 mod keyinfo;
 mod kind;
