@@ -35,9 +35,13 @@ pub enum Key {
     #[cfg(feature = "p384")]
     P384(super::Kind<p384::PublicKey, p384::SecretKey>),
 
-    /// A P-521 key
+    /// A P-521 key.
     #[cfg(feature = "p521")]
     P521(super::Kind<p521::PublicKey, p521::SecretKey>),
+
+    /// A Secp256k1 key.
+    #[cfg(feature = "k256")]
+    P256K(super::Kind<k256::PublicKey, k256::SecretKey>),
 }
 
 impl KeyInfo for Key {
@@ -56,6 +60,9 @@ impl KeyInfo for Key {
 
             #[cfg(feature = "p521")]
             Self::P521(k) => k.strength(),
+
+            #[cfg(feature = "k256")]
+            Self::P256K(k) => k.strength(),
         }
     }
 
@@ -74,6 +81,9 @@ impl KeyInfo for Key {
 
             #[cfg(feature = "p521")]
             Self::P521(k) => k.is_supported(algo),
+
+            #[cfg(feature = "k256")]
+            Key::P256K(k) => k.is_supported(algo),
         }
     }
 }
@@ -248,6 +258,12 @@ impl From<&Key> for crate::Key {
 
             #[cfg(feature = "p521")]
             Key::P521(kind) => match kind {
+                super::Kind::Public(public) => Self::Ec(public.into()),
+                super::Kind::Secret(secret) => Self::Ec(secret.into()),
+            },
+
+            #[cfg(feature = "k256")]
+            Key::P256K(kind) => match kind {
                 super::Kind::Public(public) => Self::Ec(public.into()),
                 super::Kind::Secret(secret) => Self::Ec(secret.into()),
             },
