@@ -92,7 +92,7 @@ dual licensed as above, without any additional terms or conditions.
 
 [//]: # (badges)
 
-[crate-image]: https://buildstats.info/crate/jose-jws
+[crate-image]: https://img.shields.io/crates/v/jose-jws
 [crate-link]: https://crates.io/crates/jose-jws
 [docs-image]: https://docs.rs/jose-jws/badge.svg
 [docs-link]: https://docs.rs/jose-jws/

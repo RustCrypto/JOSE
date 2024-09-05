@@ -37,7 +37,7 @@ dual licensed as above, without any additional terms or conditions.
 
 [//]: # (badges)
 
-[crate-image]: https://buildstats.info/crate/jose-jwe
+[crate-image]: https://img.shields.io/crates/v/jose-jwe
 [crate-link]: https://crates.io/crates/jose-jwe
 [docs-image]: https://docs.rs/jose-jwe/badge.svg
 [docs-link]: https://docs.rs/jose-jwe/
