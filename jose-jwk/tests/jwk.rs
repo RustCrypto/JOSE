@@ -6,6 +6,7 @@ mod rfc7517 {
     use jose_jwa::Signing;
     use jose_jwk::*;
 
+    /// From https://datatracker.ietf.org/doc/html/rfc7517#appendix-A.1
     #[test]
     fn a1() {
         let val = serde_json::json!({
@@ -106,6 +107,7 @@ mod rfc7517 {
         }
     }
 
+    /// From https://datatracker.ietf.org/doc/html/rfc7517#appendix-A.2
     #[test]
     fn a2() {
         let val = serde_json::json!({
@@ -312,6 +314,7 @@ mod rfc7517 {
         }
     }
 
+    /// From https://datatracker.ietf.org/doc/html/rfc7517#appendix-B
     #[test]
     fn b() {
         let val = serde_json::json!({
@@ -421,6 +424,7 @@ mod rfc7517 {
 mod rfc8037 {
     use jose_jwk::*;
 
+    /// From https://datatracker.ietf.org/doc/html/rfc8037#appendix-A.1
     #[test]
     fn a1() {
         let val = serde_json::json!({
@@ -453,6 +457,7 @@ mod rfc8037 {
         assert_eq!(val, serde_json::to_value(jwk).unwrap());
     }
 
+    /// From https://datatracker.ietf.org/doc/html/rfc8037#appendix-A.2
     #[test]
     fn a2() {
         let val = serde_json::json!({
@@ -478,6 +483,7 @@ mod rfc8037 {
         assert_eq!(val, serde_json::to_value(jwk).unwrap());
     }
 
+    /// From https://datatracker.ietf.org/doc/html/rfc8037#appendix-A.6
     #[test]
     fn a6() {
         let val = serde_json::json!({
@@ -507,6 +513,7 @@ mod rfc8037 {
         assert_eq!(val, serde_json::to_value(jwk).unwrap());
     }
 
+    /// From https://datatracker.ietf.org/doc/html/rfc8037#appendix-A.7
     #[test]
     fn a7() {
         let val = serde_json::json!({
