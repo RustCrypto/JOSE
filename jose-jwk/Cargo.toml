@@ -25,7 +25,7 @@ crypto = ["p256", "p384", "p521", "k256", "rsa"]
 jose-b64 = { version = "0.1", default-features = false, features = ["secret"], path = "../jose-b64" }
 jose-jwa = { version = "0.1", path = "../jose-jwa" }
 serde = { version = "1.0.185", default-features = false, features = ["alloc", "derive"] }
-zeroize = { version = "1.7.0", default-features = false, features = ["alloc"] }
+zeroize = { version = "1.8.1", default-features = false, features = ["alloc"] }
 
 # optional dependencies
 p256 = { version = "0.13.2", default-features = false, optional = true, features = ["arithmetic"] }
