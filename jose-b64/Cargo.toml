@@ -19,7 +19,7 @@ json = ["serde", "dep:serde_json"]
 serde = ["dep:serde"]
 
 [dependencies]
-base64ct = { version = "1.6.0", default-features = false, features = ["alloc"] }
+base64ct = { version = "1.7.3", default-features = false, features = ["alloc"] }
 
 # optional dependencies
 zeroize = { version = "1.7.0", default-features = false, optional = true, features = ["alloc", "serde"] }
