@@ -22,6 +22,7 @@
 extern crate alloc;
 
 pub mod crypto;
+pub mod legacy;
 
 mod key;
 mod prm;

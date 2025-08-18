@@ -24,7 +24,7 @@ jobs:
   minimal-versions:
     uses: RustCrypto/actions/.github/workflows/minimal-versions.yml@master
     with:
-        working-directory: ${{ github.workflow }}
+      working-directory: ${{ github.workflow }}
 
   no_std:
     runs-on: ubuntu-latest
@@ -57,6 +57,7 @@ jobs:
           # Test no features, individual features and all features.
           - ""
           - crypto
+          - legacy
           - p256
           - p384
           - rsa
@@ -70,6 +71,7 @@ jobs:
           - p384,rsa
           - rsa,p256
           - rsa,p384
+    # TODO(tarcieri): switch to cargo-hack
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@master
