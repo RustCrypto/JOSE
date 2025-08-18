@@ -5,7 +5,7 @@ on:
     paths-ignore:
       - README.md
   push:
-    branches: 
+    branches:
       - master
     paths-ignore:
       - README.md
@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@1.65.0
+      - uses: dtolnay/rust-toolchain@1.89
         with:
           components: clippy
       - run: cargo clippy --all-features --all-targets -- -D warnings
@@ -41,5 +41,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@nightly
         with:
-            components: rustfmt
+          components: rustfmt
       - run: cargo fmt --all -- --check
