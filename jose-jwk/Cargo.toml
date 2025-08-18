@@ -39,7 +39,7 @@ url = { version = "2.4.1", default-features = false, optional = true, features =
 # legacy dependencies
 base64ct = { version = "1", optional = true, default-features = false, features = ["alloc"] }
 elliptic-curve = { version = "0.13", optional = true, default-features = false, features = ["arithmetic", "sec1"] }
-serdect = { version = "0.3", optional = true, default-features = false, features = ["alloc"] }
+serdect = { version = "0.2", optional = true, default-features = false, features = ["alloc"] }
 serde_json = { version = "1.0.121", optional = true, default-features = false, features = ["alloc"] }
 subtle = { version = "2.6", optional = true, default-features = false }
 
