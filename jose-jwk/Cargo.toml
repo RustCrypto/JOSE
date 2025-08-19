@@ -1,6 +1,6 @@
 [package]
 name = "jose-jwk"
-version = "0.1.2"
+version = "0.2.0-pre"
 authors = ["RustCrypto Developers"]
 license = "Apache-2.0 OR MIT"
 description = """
@@ -14,8 +14,8 @@ repository = "https://github.com/RustCrypto/JOSE"
 categories = ["cryptography", "data-structures", "encoding", "parser-implementations"]
 keywords = ["json", "jose"]
 readme = "README.md"
-edition = "2021"
-rust-version = "1.65"
+edition = "2024"
+rust-version = "1.85"
 
 [features]
 default = ["crypto"]
@@ -23,28 +23,28 @@ crypto = ["p256", "p384", "p521", "k256", "rsa"]
 legacy = ["dep:base64ct", "dep:elliptic-curve", "dep:serde_json", "dep:serdect", "dep:subtle"]
 
 [dependencies]
-jose-b64 = { version = "0.1", default-features = false, features = ["secret"], path = "../jose-b64" }
-jose-jwa = { version = "0.1", path = "../jose-jwa" }
-serde = { version = "1.0.185", default-features = false, features = ["alloc", "derive"] }
-zeroize = { version = "1.7.0", default-features = false, features = ["alloc"] }
+jose-b64 = { version = "=0.2.0-pre", default-features = false, features = ["secret"] }
+jose-jwa = { version = "=0.2.0-pre" }
+serde = { version = "1", default-features = false, features = ["alloc", "derive"] }
+zeroize = { version = "1.8.1", default-features = false, features = ["alloc"] }
 
 # optional dependencies
-p256 = { version = "0.13.2", default-features = false, optional = true, features = ["arithmetic"] }
-p384 = { version = "0.13.1", default-features = false, optional = true, features = ["arithmetic"] }
-p521 = { version = "0.13.3", default-features = false, optional = true, features = ["arithmetic"] }
-k256 = { version = "0.13.4", default-features = false, optional = true, features = ["arithmetic"] }
-rsa = { version = "0.9", default-features = false, optional = true }
+p256 = { version = "0.14.0-pre.9", default-features = false, optional = true, features = ["arithmetic"] }
+p384 = { version = "0.14.0-pre.9", default-features = false, optional = true, features = ["arithmetic"] }
+p521 = { version = "0.14.0-pre.9", default-features = false, optional = true, features = ["arithmetic"] }
+k256 = { version = "0.14.0-pre.9", default-features = false, optional = true, features = ["arithmetic"] }
+rsa = { version = "0.10.0-rc.6", default-features = false, optional = true }
 url = { version = "2.4.1", default-features = false, optional = true, features = ["serde"] }
 
 # legacy dependencies
 base64ct = { version = "1", optional = true, default-features = false, features = ["alloc"] }
-elliptic-curve = { version = "0.13", optional = true, default-features = false, features = ["arithmetic", "sec1"] }
+elliptic-curve = { version = "0.14.0-rc.4", optional = true, default-features = false, features = ["arithmetic", "sec1"] }
 serdect = { version = "0.2", optional = true, default-features = false, features = ["alloc"] }
 serde_json = { version = "1.0.121", optional = true, default-features = false, features = ["alloc"] }
 subtle = { version = "2.6", optional = true, default-features = false }
 
 [dev-dependencies]
-elliptic-curve = { version = "0.13", default-features = false, features = ["dev"] }
+elliptic-curve = { version = "0.14.0-rc.4", default-features = false, features = ["dev"] }
 serde_json = "1.0.121"
 
 [package.metadata.docs.rs]

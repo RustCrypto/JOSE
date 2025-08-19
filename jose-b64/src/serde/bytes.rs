@@ -11,7 +11,7 @@ use core::ops::{Deref, DerefMut};
 use core::str::FromStr;
 
 use base64ct::{Base64UrlUnpadded, Encoding};
-use serde::{de::Error as _, Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer, de::Error as _};
 
 use crate::stream::Error;
 

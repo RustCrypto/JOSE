@@ -12,6 +12,11 @@ use super::Error;
 use super::KeyInfo;
 use crate::{Ec, EcCurves};
 
+#[cfg(feature = "legacy")]
+impl crate::legacy::JwkParameters for k256::Secp256k1 {
+    const CRV: &'static str = "secp256k1";
+}
+
 impl KeyInfo for PublicKey {
     fn strength(&self) -> usize {
         16

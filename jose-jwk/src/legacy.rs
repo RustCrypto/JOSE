@@ -16,12 +16,12 @@ use core::{
     str::{self, FromStr},
 };
 use elliptic_curve::{
-    sec1::{Coordinates, EncodedPoint, ModulusSize, ValidatePublicKey},
-    sec1::{FromEncodedPoint, ToEncodedPoint},
     AffinePoint, Curve, CurveArithmetic, Error, FieldBytes, FieldBytesSize, PublicKey, Result,
     SecretKey,
+    sec1::{Coordinates, EncodedPoint, ModulusSize, ValidatePublicKey},
+    sec1::{FromEncodedPoint, ToEncodedPoint},
 };
-use serdect::serde::{de, ser, Deserialize, Serialize};
+use serdect::serde::{Deserialize, Serialize, de, ser};
 use zeroize::{Zeroize, ZeroizeOnDrop};
 
 /// Key Type (`kty`) for elliptic curve keys.

@@ -4,8 +4,8 @@
 #![cfg(feature = "rsa")]
 
 use rsa::{
+    BoxedUint, RsaPrivateKey, RsaPublicKey,
     traits::{PrivateKeyParts, PublicKeyParts},
-    BigUint, RsaPrivateKey, RsaPublicKey,
 };
 
 use jose_jwa::{Algorithm, Algorithm::Signing, Signing::*};
@@ -64,8 +64,8 @@ impl KeyInfo for RsaPrivateKey {
 impl From<&RsaPublicKey> for Rsa {
     fn from(pk: &RsaPublicKey) -> Self {
         Self {
-            n: pk.n().to_bytes_be().into(),
-            e: pk.e().to_bytes_be().into(),
+            n: pk.n().to_be_bytes_trimmed_vartime().into(),
+            e: pk.e().to_be_bytes_trimmed_vartime().into(),
             prv: None,
         }
     }
@@ -81,8 +81,8 @@ impl TryFrom<&Rsa> for RsaPublicKey {
     type Error = Error;
 
     fn try_from(value: &Rsa) -> Result<Self, Self::Error> {
-        let n = BigUint::from_bytes_be(&value.n);
-        let e = BigUint::from_bytes_be(&value.e);
+        let n = BoxedUint::from_be_slice_vartime(&value.n);
+        let e = BoxedUint::from_be_slice_vartime(&value.e);
         RsaPublicKey::new(n, e).map_err(|_| Error::Invalid)
     }
 }
@@ -98,18 +98,23 @@ impl TryFrom<Rsa> for RsaPublicKey {
 impl From<&RsaPrivateKey> for Rsa {
     fn from(pk: &RsaPrivateKey) -> Self {
         let opt = Some(RsaOptional {
-            p: pk.primes()[0].to_bytes_be().into(),
-            q: pk.primes()[1].to_bytes_be().into(),
-            dp: pk.dp().expect("unreachable").to_bytes_be().into(),
-            dq: pk.dq().expect("unreachable").to_bytes_be().into(),
-            qi: pk.qinv().expect("unreachable").to_bytes_be().1.into(),
+            p: pk.primes()[0].to_be_bytes().into(),
+            q: pk.primes()[1].to_be_bytes().into(),
+            dp: pk.dp().expect("unreachable").to_be_bytes().into(),
+            dq: pk.dq().expect("unreachable").to_be_bytes().into(),
+            qi: pk
+                .qinv()
+                .expect("unreachable")
+                .retrieve()
+                .to_be_bytes()
+                .into(),
             oth: alloc::vec![],
         });
         Self {
-            n: pk.n().to_bytes_be().into(),
-            e: pk.e().to_bytes_be().into(),
+            n: pk.n().to_be_bytes_trimmed_vartime().into(),
+            e: pk.e().to_be_bytes_trimmed_vartime().into(),
             prv: Some(RsaPrivate {
-                d: pk.d().to_bytes_be().into(),
+                d: pk.d().to_be_bytes().into(),
                 opt,
             }),
         }
@@ -128,14 +133,17 @@ impl TryFrom<&Rsa> for RsaPrivateKey {
     fn try_from(value: &Rsa) -> Result<Self, Self::Error> {
         if let Some(prv) = value.prv.as_ref() {
             if let Some(opt) = prv.opt.as_ref() {
-                let n = BigUint::from_bytes_be(&value.n);
-                let e = BigUint::from_bytes_be(&value.e);
-                let d = BigUint::from_bytes_be(&prv.d);
-                let p = BigUint::from_bytes_be(&opt.p);
-                let q = BigUint::from_bytes_be(&opt.q);
+                let bits = u32::try_from(value.n.len()).map_err(|_| Error::Invalid)? * 8;
+                let n = BoxedUint::from_be_slice_vartime(&value.n);
+                let e = BoxedUint::from_be_slice_vartime(&value.e);
+                let d = BoxedUint::from_be_slice(&prv.d, bits).map_err(|_| Error::Invalid)?;
+                let p = BoxedUint::from_be_slice(&opt.p, bits).map_err(|_| Error::Invalid)?;
+                let q = BoxedUint::from_be_slice(&opt.q, bits).map_err(|_| Error::Invalid)?;
 
                 let mut primes = alloc::vec![p, q];
-                primes.extend(opt.oth.iter().map(|x| BigUint::from_bytes_be(&x.r)));
+                for p in opt.oth.iter() {
+                    primes.push(BoxedUint::from_be_slice(&p.r, bits).map_err(|_| Error::Invalid)?);
+                }
 
                 return Self::from_components(n, e, d, primes).map_err(|_| Error::Invalid);
             }

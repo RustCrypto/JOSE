@@ -12,6 +12,11 @@ use super::Error;
 use super::KeyInfo;
 use crate::{Ec, EcCurves};
 
+#[cfg(feature = "legacy")]
+impl crate::legacy::JwkParameters for p384::NistP384 {
+    const CRV: &'static str = "P-384";
+}
+
 impl KeyInfo for PublicKey {
     fn strength(&self) -> usize {
         24

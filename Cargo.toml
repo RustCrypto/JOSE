@@ -11,3 +11,17 @@ members = [
 
 [profile.dev]
 opt-level = 2
+
+[patch.crates-io]
+jose-b64 = { path = "./jose-b64" }
+jose-jwa = { path = "./jose-jwa" }
+jose-jwe = { path = "./jose-jwe" }
+jose-jwk = { path = "./jose-jwk" }
+jose-jws = { path = "./jose-jws" }
+jose-jwt = { path = "./jose-jwt" }
+
+primefield = { git = "https://github.com/RustCrypto/elliptic-curves.git" }
+k256       = { git = "https://github.com/RustCrypto/elliptic-curves.git" }
+p256       = { git = "https://github.com/RustCrypto/elliptic-curves.git" }
+p384       = { git = "https://github.com/RustCrypto/elliptic-curves.git" }
+p521       = { git = "https://github.com/RustCrypto/elliptic-curves.git" }

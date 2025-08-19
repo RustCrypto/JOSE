@@ -1,6 +1,6 @@
 [package]
 name = "jose-jws"
-version = "0.1.2"
+version = "0.2.0-pre"
 authors = ["RustCrypto Developers"]
 license = "Apache-2.0 OR MIT"
 description = """
@@ -14,16 +14,16 @@ repository = "https://github.com/RustCrypto/JOSE"
 categories = ["cryptography", "data-structures", "encoding", "parser-implementations"]
 keywords = ["json", "jose"]
 readme = "README.md"
-edition = "2021"
-rust-version = "1.65"
+edition = "2024"
+rust-version = "1.85"
 
 [dependencies]
-jose-b64 = { version = "0.1", default-features = false, features = ["json"], path = "../jose-b64" }
-jose-jwa = { version = "0.1", path = "../jose-jwa" }
-jose-jwk = { version = "0.1", default-features = false, path = "../jose-jwk" }
+jose-b64 = { version = "=0.2.0-pre", default-features = false, features = ["json"] }
+jose-jwa = { version = "=0.2.0-pre" }
+jose-jwk = { version = "=0.2.0-pre", default-features = false }
 serde = { version = "1.0.185", default-features = false, features = ["alloc", "derive"] }
 serde_json = { version = "1.0.96", default-features = false }
-rand_core = { version = "0.6.4", default-features = false }
+rand_core = { version = "0.9", default-features = false }
 
 [package.metadata.docs.rs]
 all-features = true
