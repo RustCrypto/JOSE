@@ -22,7 +22,7 @@ serde = ["dep:serde"]
 base64ct = { version = "1.6.0", default-features = false, features = ["alloc"] }
 
 # optional dependencies
-zeroize = { version = "1.7.0", default-features = false, optional = true, features = ["alloc", "serde"] }
+zeroize = { version = "1.8.1", default-features = false, optional = true, features = ["alloc", "serde"] }
 serde = { version = "1.0.185", default-features = false, optional = true, features = ["alloc", "derive"] }
 serde_json = { version = "1.0.96", default-features = false, optional = true, features = ["alloc"] }
 subtle = { version = "2.5.0", default-features = false, optional = true }
