@@ -44,3 +44,16 @@ pub enum EcCurves {
     #[serde(rename = "secp256k1")]
     P256K,
 }
+
+impl EcCurves {
+    /// Returns the string representation of the curve.
+    #[must_use]
+    pub const fn as_str(&self) -> &'static str {
+        match self {
+            EcCurves::P256 => "P-256",
+            EcCurves::P384 => "P-384",
+            EcCurves::P521 => "P-521",
+            EcCurves::P256K => "secp256k1",
+        }
+    }
+}

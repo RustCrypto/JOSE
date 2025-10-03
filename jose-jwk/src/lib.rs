@@ -23,12 +23,14 @@ extern crate alloc;
 
 pub mod crypto;
 pub mod legacy;
+pub mod thumbprint;
 
 mod key;
 mod prm;
 
 pub use key::*;
 pub use prm::{Class, Operations, Parameters, Thumbprint};
+pub use thumbprint::{JwkThumbprint, ThumbprintError};
 
 pub use jose_b64;
 pub use jose_jwa;
