@@ -54,7 +54,7 @@ let jws_json = serde_json::json!({
     ]
 });
 
-let Jws::General(jws) = serde_json::from_value(jws_json).unwrap() else {
+let Jws::General(jws) = serde_json::from_value::<Jws>(jws_json).unwrap() else {
     panic!("couldn't deserialize JWS");
 };
 

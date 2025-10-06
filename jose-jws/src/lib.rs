@@ -37,23 +37,24 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[non_exhaustive]
 #[allow(clippy::large_enum_variant)]
+#[serde(bound(deserialize = "U: Deserialize<'de>, P: serde::de::DeserializeOwned"))]
 #[serde(untagged)]
-pub enum Jws {
+pub enum Jws<U = Unprotected, P = Protected<U>> {
     /// General Serialization. This is
-    General(General),
+    General(General<U, P>),
 
     /// Flattened Serialization
-    Flattened(Flattened),
+    Flattened(Flattened<U, P>),
 }
 
-impl From<General> for Jws {
-    fn from(value: General) -> Self {
+impl<U, P> From<General<U, P>> for Jws<U, P> {
+    fn from(value: General<U, P>) -> Self {
         Jws::General(value)
     }
 }
 
-impl From<Flattened> for Jws {
-    fn from(value: Flattened) -> Self {
+impl<U, P> From<Flattened<U, P>> for Jws<U, P> {
+    fn from(value: Flattened<U, P>) -> Self {
         Jws::Flattened(value)
     }
 }
@@ -77,16 +78,17 @@ impl From<Flattened> for Jws {
 /// }
 /// ```
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct General {
+#[serde(bound(deserialize = "U: Deserialize<'de>, P: serde::de::DeserializeOwned"))]
+pub struct General<U = Unprotected, P = Protected<U>> {
     /// The payload of the signature.
     pub payload: Option<Bytes>,
 
     /// The signatures over the payload.
-    pub signatures: Vec<Signature>,
+    pub signatures: Vec<Signature<U, P>>,
 }
 
-impl From<Flattened> for General {
-    fn from(value: Flattened) -> Self {
+impl<U, P> From<Flattened<U, P>> for General<U, P> {
+    fn from(value: Flattened<U, P>) -> Self {
         Self {
             payload: value.payload,
             signatures: vec![value.signature],
@@ -108,23 +110,25 @@ impl From<Flattened> for General {
 /// }
 /// ```
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Flattened {
+#[serde(bound(deserialize = "U: Deserialize<'de>, P: serde::de::DeserializeOwned"))]
+pub struct Flattened<U = Unprotected, P = Protected<U>> {
     /// The payload of the signature.
     pub payload: Option<Bytes>,
 
     /// The signature over the payload.
     #[serde(flatten)]
-    pub signature: Signature,
+    pub signature: Signature<U, P>,
 }
 
 /// A Signature
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Signature {
+#[serde(bound(deserialize = "U: Deserialize<'de>, P: serde::de::DeserializeOwned"))]
+pub struct Signature<U = Unprotected, P = Protected<U>> {
     /// The JWS Unprotected Header
-    pub header: Option<Unprotected>,
+    pub header: Option<U>,
 
     /// The JWS Protected Header
-    pub protected: Option<Json<Protected>>,
+    pub protected: Option<Json<P>>,
 
     /// The Signature Bytes
     pub signature: Bytes,

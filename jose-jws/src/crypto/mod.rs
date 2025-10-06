@@ -11,28 +11,24 @@ use rand_core::RngCore;
 use crate::{Flattened, General, Jws, Protected, Signature, Unprotected};
 
 /// Signature creation state
-pub trait Signer: Update {
+pub trait Signer<U = Unprotected, P = Protected<U>>: Update {
     #[allow(missing_docs)]
     type FinishError: From<Self::Error>;
 
     /// Finish processing payload and create the signature.
-    fn finish(self, rng: impl 'static + RngCore) -> Result<Signature, Self::FinishError>;
+    fn finish(self, rng: impl 'static + RngCore) -> Result<Signature<U, P>, Self::FinishError>;
 }
 
 /// A signature creation key
-pub trait SigningKey<'a> {
+pub trait SigningKey<'a, U = Unprotected, P = Protected<U>> {
     #[allow(missing_docs)]
     type StartError: From<<Self::Signer as Update>::Error>;
 
     /// The state object used during signing.
-    type Signer: Signer;
+    type Signer: Signer<U, P>;
 
     /// Begin the signature creation process.
-    fn sign(
-        &'a self,
-        prot: Option<Protected>,
-        head: Option<Unprotected>,
-    ) -> Result<Self::Signer, Self::StartError>;
+    fn sign(&'a self, prot: Option<P>, head: Option<U>) -> Result<Self::Signer, Self::StartError>;
 }
 
 /// Signature verification state
@@ -98,26 +94,31 @@ where
     }
 }
 
-impl<'a, T: VerifyingKey<'a, &'a Signature>> VerifyingKey<'a, &'a Flattened> for T
+impl<'a, T, U, P> VerifyingKey<'a, &'a Flattened<U, P>> for T
 where
+    T: VerifyingKey<'a, &'a Signature<U, P>>,
     <T::Verifier as Verifier<'a>>::FinishError: Default,
 {
     type StartError = T::StartError;
     type Verifier = Vec<T::Verifier>;
 
-    fn verify(&'a self, flattened: &'a Flattened) -> Result<Self::Verifier, Self::StartError> {
+    fn verify(
+        &'a self,
+        flattened: &'a Flattened<U, P>,
+    ) -> Result<Self::Verifier, Self::StartError> {
         Ok(vec![self.verify(&flattened.signature)?])
     }
 }
 
-impl<'a, T: VerifyingKey<'a, &'a Signature>> VerifyingKey<'a, &'a General> for T
+impl<'a, T, U, P> VerifyingKey<'a, &'a General<U, P>> for T
 where
+    T: VerifyingKey<'a, &'a Signature<U, P>>,
     <T::Verifier as Verifier<'a>>::FinishError: Default,
 {
     type StartError = T::StartError;
     type Verifier = Vec<T::Verifier>;
 
-    fn verify(&'a self, general: &'a General) -> Result<Self::Verifier, Self::StartError> {
+    fn verify(&'a self, general: &'a General<U, P>) -> Result<Self::Verifier, Self::StartError> {
         general
             .signatures
             .iter()
@@ -126,17 +127,17 @@ where
     }
 }
 
-impl<'a, T, V, E> VerifyingKey<'a, &'a Jws> for T
+impl<'a, T, V, E, U, P> VerifyingKey<'a, &'a Jws<U, P>> for T
 where
-    T: VerifyingKey<'a, &'a Flattened, Verifier = V, StartError = E>,
-    T: VerifyingKey<'a, &'a General, Verifier = V, StartError = E>,
+    T: VerifyingKey<'a, &'a Flattened<U, P>, Verifier = V, StartError = E>,
+    T: VerifyingKey<'a, &'a General<U, P>, Verifier = V, StartError = E>,
     E: From<V::Error>,
     V: Verifier<'a>,
 {
     type StartError = E;
     type Verifier = V;
 
-    fn verify(&'a self, jws: &'a Jws) -> Result<Self::Verifier, Self::StartError> {
+    fn verify(&'a self, jws: &'a Jws<U, P>) -> Result<Self::Verifier, Self::StartError> {
         match jws {
             Jws::General(general) => self.verify(general),
             Jws::Flattened(flattened) => self.verify(flattened),

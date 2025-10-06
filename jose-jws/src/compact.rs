@@ -9,7 +9,10 @@ use jose_b64::stream::Error;
 
 use crate::{Flattened, General, Jws, Signature};
 
-impl FromStr for Jws {
+impl<U, P> FromStr for Jws<U, P>
+where
+    P: serde::de::DeserializeOwned,
+{
     type Err = Error<serde_json::Error>;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -17,7 +20,10 @@ impl FromStr for Jws {
     }
 }
 
-impl FromStr for General {
+impl<U, P> FromStr for General<U, P>
+where
+    P: serde::de::DeserializeOwned,
+{
     type Err = Error<serde_json::Error>;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -25,7 +31,10 @@ impl FromStr for General {
     }
 }
 
-impl FromStr for Flattened {
+impl<U, P> FromStr for Flattened<U, P>
+where
+    P: serde::de::DeserializeOwned,
+{
     type Err = Error<serde_json::Error>;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -54,7 +63,7 @@ impl FromStr for Flattened {
     }
 }
 
-impl Display for Flattened {
+impl<U, P> Display for Flattened<U, P> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         let mut prot = alloc::string::String::new();
         if let Some(x) = self.signature.protected.as_ref() {

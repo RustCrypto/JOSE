@@ -3,6 +3,7 @@
 
 use alloc::vec::Vec;
 use alloc::{boxed::Box, string::String};
+use core::ops::{Deref, DerefMut};
 
 use jose_b64::base64ct::Base64;
 use jose_b64::serde::Bytes;
@@ -22,7 +23,7 @@ fn b64_serialize(value: &bool) -> bool {
 
 /// The JWS Protected Header
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Protected {
+pub struct Protected<U = Unprotected> {
     /// RFC 7517 Section 4.1.11
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub crit: Option<Vec<String>>,
@@ -37,17 +38,31 @@ pub struct Protected {
 
     /// Other values that may appear in the protected header.
     #[serde(flatten)]
-    pub oth: Unprotected,
+    pub oth: U,
 }
 
-impl Default for Protected {
+impl<U: Default> Default for Protected<U> {
     fn default() -> Self {
         Self {
             crit: None,
             nonce: None,
             b64: true,
-            oth: Unprotected::default(),
+            oth: U::default(),
         }
+    }
+}
+
+impl<U> Deref for Protected<U> {
+    type Target = U;
+
+    fn deref(&self) -> &Self::Target {
+        &self.oth
+    }
+}
+
+impl<U> DerefMut for Protected<U> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.oth
     }
 }
 
