@@ -58,6 +58,10 @@ pub struct Unprotected {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub alg: Option<Signing>,
 
+    /// RFC 7515 Section 4.1.2
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub jku: Option<String>,
+
     /// RFC 7515 Section 4.1.3
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub jwk: Option<Jwk>,
@@ -65,6 +69,10 @@ pub struct Unprotected {
     /// RFC 7515 Section 4.1.4
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub kid: Option<String>,
+
+    /// RFC 7515 Section 4.1.5
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub x5u: Option<String>,
 
     /// RFC 7515 Section 4.1.6
     #[serde(skip_serializing_if = "Option::is_none", default)]
