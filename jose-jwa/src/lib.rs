@@ -19,6 +19,8 @@
     unused_qualifications
 )]
 
+mod crypto;
+
 use core::fmt;
 
 use serde::{Deserialize, Serialize};
@@ -99,9 +101,32 @@ pub enum Signing {
     Null,
 }
 
+impl Signing {
+    /// Returns the string representation of this signing algorithm.
+    pub fn as_str(&self) -> &str {
+        match self {
+            Self::EdDsa => "EdDSA",
+            Self::Es256 => "ES256",
+            Self::Es256K => "ES256K",
+            Self::Es384 => "ES384",
+            Self::Es512 => "ES512",
+            Self::Hs256 => "HS256",
+            Self::Hs384 => "HS384",
+            Self::Hs512 => "HS512",
+            Self::Ps256 => "PS256",
+            Self::Ps384 => "PS384",
+            Self::Ps512 => "PS512",
+            Self::Rs256 => "RS256",
+            Self::Rs384 => "RS384",
+            Self::Rs512 => "RS512",
+            Self::Null => "none",
+        }
+    }
+}
+
 impl fmt::Display for Signing {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.serialize(f)
+        f.write_str(self.as_str())
     }
 }
 
