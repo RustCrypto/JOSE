@@ -544,4 +544,80 @@ mod rfc8037 {
         assert_eq!(jwk, serde_json::from_value(val.clone()).unwrap());
         assert_eq!(val, serde_json::to_value(jwk).unwrap());
     }
+
+    // From https://openid.net/specs/openid-federation-1_0.html#name-federation-historical-keys-res
+    // With replaced key types for brevity
+    #[test]
+    fn openid() {
+        let val = serde_json::json!({"keys":
+        [
+            {
+                "kty": "OKP",
+                "crv": "X448",
+                "x": "PreoKbDNIPW8_AtZm2_sz22kYnEHvbDU80W0MCfYuXL8PjT7QjKhPKcG3LV67D2uB73BxnvzNgk",
+                "kid": "2HnoFS3YnC9tjiCaivhWLVUJ3AxwGGz_98uRFaqMEEs",
+                "iat": 1661151600,
+                "exp": 1677052800
+            },
+            {
+                "kty":"OKP",
+                "crv":"X25519",
+                "x":"3p7bfXt9wbTTW2HC7OQ1Nz-DQ8hbeGdNrfx-FG-IK08",
+                "kid": "8KnoFS3YnC9tjiCaivhWLVUJ3AxwGGz_98uRFaqMJJr",
+                "iat": 1647932400,
+                "exp": 1663830000,
+                "revoked": {
+                  "revoked_at": 1661151600,
+                  "reason": "compromised",
+                }
+            }
+        ]});
+        let jwks = JwkSet {
+            keys: vec![
+                Jwk {
+                    key: Key::Okp(Okp {
+                        crv: OkpCurves::X448,
+                        d: None,
+                        x: vec![
+                            62, 183, 168, 41, 176, 205, 32, 245, 188, 252, 11, 89, 155, 111, 236,
+                            207, 109, 164, 98, 113, 7, 189, 176, 212, 243, 69, 180, 48, 39, 216,
+                            185, 114, 252, 62, 52, 251, 66, 50, 161, 60, 167, 6, 220, 181, 122,
+                            236, 61, 174, 7, 189, 193, 198, 123, 243, 54, 9,
+                        ]
+                        .into(),
+                    }),
+                    prm: Parameters {
+                        kid: Some("2HnoFS3YnC9tjiCaivhWLVUJ3AxwGGz_98uRFaqMEEs".to_string()),
+                        iat: Some(1661151600),
+                        exp: Some(1677052800),
+                        ..Default::default()
+                    },
+                },
+                Jwk {
+                    key: Key::Okp(Okp {
+                        crv: OkpCurves::X25519,
+                        d: None,
+                        x: vec![
+                            222, 158, 219, 125, 123, 125, 193, 180, 211, 91, 97, 194, 236, 228, 53,
+                            55, 63, 131, 67, 200, 91, 120, 103, 77, 173, 252, 126, 20, 111, 136,
+                            43, 79,
+                        ]
+                        .into(),
+                    }),
+                    prm: Parameters {
+                        kid: Some("8KnoFS3YnC9tjiCaivhWLVUJ3AxwGGz_98uRFaqMJJr".to_string()),
+                        iat: Some(1647932400),
+                        exp: Some(1663830000),
+                        revoked: Some(Revoked {
+                            revoked_at: 1661151600,
+                            reason: Some(RevocationReason::Compromised),
+                        }),
+                        ..Default::default()
+                    },
+                },
+            ],
+        };
+        assert_eq!(jwks, serde_json::from_value(val.clone()).unwrap());
+        assert_eq!(val, serde_json::to_value(jwks).unwrap());
+    }
 }

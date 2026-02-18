@@ -28,7 +28,7 @@ mod key;
 mod prm;
 
 pub use key::*;
-pub use prm::{Class, Operations, Parameters, Thumbprint};
+pub use prm::{Class, Operations, Parameters, RevocationReason, Revoked, Thumbprint};
 
 pub use jose_b64;
 pub use jose_jwa;
