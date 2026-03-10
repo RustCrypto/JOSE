@@ -1,6 +1,5 @@
 [package]
 name = "jose-jwe"
-version = "0.1.0-pre"
 authors = ["RustCrypto Developers"]
 license = "Apache-2.0 OR MIT"
 description = """
@@ -10,12 +9,40 @@ RFC7516
 """
 documentation = "https://docs.rs/jose-jwe"
 homepage = "https://github.com/RustCrypto/JOSE/tree/master/jose-jwe"
-repository = "https://github.com/RustCrypto/JOSE"
+repository.workspace = true
 categories = ["cryptography", "data-structures", "encoding", "parser-implementations"]
-keywords = ["json", "jose"]
+keywords = ["json", "jose", "jwe", "encryption"]
 readme = "README.md"
-edition = "2024"
-rust-version = "1.85"
+
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[features]
+default = []
+
+# Recommended algorithms (includes all recommended algorithms from RFC 7518)
+recommended = ["rand"]
+
+# Random number generation support
+rand = ["dep:rand_core", "dep:getrandom"]
+
+[dependencies]
+jose-b64 = { workspace = true }
+jose-jwa = { workspace = true }
+jose-jwk = { workspace = true }
+
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Random number generation
+rand_core = { workspace = true, optional = true }
+getrandom = { workspace = true, optional = true }
+
+zeroize = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
 
 [package.metadata.docs.rs]
 all-features = true

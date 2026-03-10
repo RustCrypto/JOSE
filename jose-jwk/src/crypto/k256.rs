@@ -3,8 +3,8 @@
 
 #![cfg(feature = "k256")]
 
-use k256::elliptic_curve::sec1::{FromEncodedPoint, ToEncodedPoint};
-use k256::{EncodedPoint, FieldBytes, PublicKey, SecretKey};
+use k256::elliptic_curve::sec1::{FromSec1Point, ToSec1Point};
+use k256::{FieldBytes, PublicKey, Sec1Point, SecretKey};
 
 use jose_jwa::{Algorithm, Algorithm::Signing, Signing::*};
 
@@ -39,7 +39,7 @@ impl KeyInfo for SecretKey {
 
 impl From<&PublicKey> for Ec {
     fn from(pk: &PublicKey) -> Self {
-        let ep = pk.to_encoded_point(false);
+        let ep = pk.to_sec1_point(false);
 
         Self {
             crv: EcCurves::P256K,
@@ -77,8 +77,8 @@ impl TryFrom<&Ec> for PublicKey {
         x.copy_from_slice(&value.x);
         y.copy_from_slice(&value.y);
 
-        let ep = EncodedPoint::from_affine_coordinates(&x, &y, false);
-        Option::from(Self::from_encoded_point(&ep)).ok_or(Error::Invalid)
+        let ep = Sec1Point::from_affine_coordinates(&x, &y, false);
+        Option::from(Self::from_sec1_point(&ep)).ok_or(Error::Invalid)
     }
 }
 

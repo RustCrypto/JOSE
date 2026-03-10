@@ -9,6 +9,46 @@ members = [
     "jose-jwt",
 ]
 
+[workspace.package]
+edition = "2024"
+version = "0.2.0-pre"
+rust-version = "1.85"
+authors = ["RustCrypto Developers"]
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/RustCrypto/JOSE"
+
+[workspace.dependencies]
+# Internal workspace crates
+jose-b64 = { path = "./jose-b64", features = ["secret", "json"] }
+jose-jwa = { path = "./jose-jwa" }
+jose-jwe = { path = "./jose-jwe" }
+jose-jwk = { path = "./jose-jwk" }
+jose-jws = { path = "./jose-jws" }
+jose-jwt = { path = "./jose-jwt" }
+
+# External dependencies
+base64ct = { version = "1.8", default-features = false, features = ["alloc"] }
+ecdsa = { version = "0.17.0-rc.16", default-features = false, features = ["der", "algorithm", "hazmat"] }
+elliptic-curve = { version = "0.14.0-rc.28", default-features = false, features = ["arithmetic", "sec1"] }
+hmac = { version = "0.13.0-rc.5", default-features = false }
+k256 = { version = "0.14.0-rc.7", default-features = false, features = ["arithmetic", "ecdsa"] }
+p256 = { version = "0.14.0-rc.7", default-features = false, features = ["arithmetic", "ecdsa"] }
+p384 = { version = "0.14.0-rc.7", default-features = false, features = ["arithmetic", "ecdsa"] }
+p521 = { version = "0.14.0-rc.7", default-features = false, features = ["arithmetic", "ecdsa"] }
+rand_core = { version = "0.9", default-features = false }
+rsa = { version = "0.10.0-rc.16", default-features = false }
+serde = { version = "1.0.185", default-features = false, features = ["alloc", "derive"] }
+serde_json = { version = "1.0.96", default-features = false, features = ["alloc"] }
+sha2 = { version = "0.11.0-rc.5", default-features = false, features = ["oid"] }
+signature = { version = "3.0.0-rc.4", default-features = false, features = ["digest"] }
+url = { version = "2.4.1", default-features = false, features = ["serde"] }
+zeroize = { version = "1.8.1", default-features = false, features = ["alloc", "serde"] }
+
+# Optional dependencies
+getrandom = { version = "0.4", default-features = false }
+subtle = { version = "2.6", default-features = false }
+serdect = { version = "0.2", default-features = false, features = ["alloc"] }
+
 [profile.dev]
 opt-level = 2
 
@@ -19,9 +59,3 @@ jose-jwe = { path = "./jose-jwe" }
 jose-jwk = { path = "./jose-jwk" }
 jose-jws = { path = "./jose-jws" }
 jose-jwt = { path = "./jose-jwt" }
-
-primefield = { git = "https://github.com/RustCrypto/elliptic-curves.git" }
-k256       = { git = "https://github.com/RustCrypto/elliptic-curves.git" }
-p256       = { git = "https://github.com/RustCrypto/elliptic-curves.git" }
-p384       = { git = "https://github.com/RustCrypto/elliptic-curves.git" }
-p521       = { git = "https://github.com/RustCrypto/elliptic-curves.git" }

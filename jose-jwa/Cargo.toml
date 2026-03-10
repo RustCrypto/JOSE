@@ -1,6 +1,5 @@
 [package]
 name = "jose-jwa"
-version = "0.2.0-pre"
 authors = ["RustCrypto Developers"]
 license = "Apache-2.0 OR MIT"
 description = """
@@ -10,18 +9,20 @@ RFC7518
 """
 documentation = "https://docs.rs/jose-jwa"
 homepage = "https://github.com/RustCrypto/JOSE/tree/master/jose-jwa"
-repository = "https://github.com/RustCrypto/JOSE"
+repository.workspace = true
 categories = ["cryptography", "data-structures", "encoding", "parser-implementations"]
-keywords = ["json", "jose"]
+keywords = ["json", "jose", "jwa"]
 readme = "README.md"
-edition = "2024"
-rust-version = "1.85"
+
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
 
 [dependencies]
-serde = { version = "1.0.185", default-features = false, features = ["alloc", "derive"] }
+serde = { workspace = true }
 
 [dev-dependencies]
-serde_json = "1.0.96"
+serde_json = { workspace = true }
 
 [package.metadata.docs.rs]
 all-features = true

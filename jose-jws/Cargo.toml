@@ -1,6 +1,5 @@
 [package]
 name = "jose-jws"
-version = "0.2.0-pre"
 authors = ["RustCrypto Developers"]
 license = "Apache-2.0 OR MIT"
 description = """
@@ -10,20 +9,47 @@ RFC7515
 """
 documentation = "https://docs.rs/jose-jws"
 homepage = "https://github.com/RustCrypto/JOSE/tree/master/jose-jws"
-repository = "https://github.com/RustCrypto/JOSE"
+repository.workspace = true
 categories = ["cryptography", "data-structures", "encoding", "parser-implementations"]
-keywords = ["json", "jose"]
+keywords = ["json", "jose", "jws"]
 readme = "README.md"
-edition = "2024"
-rust-version = "1.85"
+
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[features]
+default = []
+hmac = ["dep:hmac", "dep:sha2"]
+rsa = ["dep:rsa", "dep:sha2", "dep:signature"]
+ecdsa = ["dep:ecdsa", "dep:sha2", "dep:signature", "dep:elliptic-curve", "p256", "p384", "p521"]
+p256 = ["dep:p256"]
+p384 = ["dep:p384"]
+p521 = ["dep:p521"]
+k256 = ["ecdsa", "dep:k256"]
 
 [dependencies]
-jose-b64 = { version = "=0.2.0-pre", default-features = false, features = ["json"] }
-jose-jwa = { version = "=0.2.0-pre" }
-jose-jwk = { version = "=0.2.0-pre", default-features = false }
-serde = { version = "1.0.185", default-features = false, features = ["alloc", "derive"] }
-serde_json = { version = "1.0.96", default-features = false }
-rand_core = { version = "0.9", default-features = false }
+jose-b64 = { workspace = true }
+jose-jwa = { workspace = true }
+jose-jwk = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+rand_core = { workspace = true }
+
+# Optional crypto dependencies
+hmac = { workspace = true, optional = true }
+ecdsa = { workspace = true, optional = true }
+elliptic-curve = { workspace = true, optional = true }
+p256 = { workspace = true, optional = true }
+p384 = { workspace = true, optional = true }
+p521 = { workspace = true, optional = true }
+k256 = { workspace = true, optional = true }
+rsa = { workspace = true, optional = true }
+sha2 = { workspace = true, optional = true }
+signature = { workspace = true, optional = true }
+
+[dev-dependencies]
+rand_core = { workspace = true }
 
 [package.metadata.docs.rs]
 all-features = true

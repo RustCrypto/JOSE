@@ -18,8 +18,8 @@ use core::{
 use elliptic_curve::{
     AffinePoint, Curve, CurveArithmetic, Error, FieldBytes, FieldBytesSize, PublicKey, Result,
     SecretKey,
-    sec1::{Coordinates, EncodedPoint, ModulusSize, ValidatePublicKey},
-    sec1::{FromEncodedPoint, ToEncodedPoint},
+    sec1::{Coordinates, ModulusSize, Sec1Point, ValidatePublicKey},
+    sec1::{FromSec1Point, ToSec1Point},
 };
 use serdect::serde::{Deserialize, Serialize, de, ser};
 use zeroize::{Zeroize, ZeroizeOnDrop};
@@ -105,14 +105,14 @@ impl JwkEcKey {
     pub fn to_public_key<C>(&self) -> Result<PublicKey<C>>
     where
         C: CurveArithmetic + JwkParameters,
-        AffinePoint<C>: FromEncodedPoint<C> + ToEncodedPoint<C>,
+        AffinePoint<C>: FromSec1Point<C> + ToSec1Point<C>,
         FieldBytesSize<C>: ModulusSize,
     {
         PublicKey::from_sec1_bytes(self.to_encoded_point::<C>()?.as_bytes())
     }
 
-    /// Create a JWK from a SEC1 [`EncodedPoint`].
-    pub fn from_encoded_point<C>(point: &EncodedPoint<C>) -> Option<Self>
+    /// Create a JWK from a [`Sec1Point`].
+    pub fn from_encoded_point<C>(point: &Sec1Point<C>) -> Option<Self>
     where
         C: Curve + JwkParameters,
         FieldBytesSize<C>: ModulusSize,
@@ -128,8 +128,8 @@ impl JwkEcKey {
         }
     }
 
-    /// Get the public key component of this JWK as a SEC1 [`EncodedPoint`].
-    pub fn to_encoded_point<C>(&self) -> Result<EncodedPoint<C>>
+    /// Get the public key component of this JWK as a [`Sec1Point`].
+    pub fn to_encoded_point<C>(&self) -> Result<Sec1Point<C>>
     where
         C: Curve + JwkParameters,
         FieldBytesSize<C>: ModulusSize,
@@ -140,7 +140,7 @@ impl JwkEcKey {
 
         let x = decode_base64url_fe::<C>(&self.x)?;
         let y = decode_base64url_fe::<C>(&self.y)?;
-        Ok(EncodedPoint::<C>::from_affine_coordinates(&x, &y, false))
+        Ok(Sec1Point::<C>::from_affine_coordinates(&x, &y, false))
     }
 
     /// Decode a JWK into a [`SecretKey`].
@@ -207,7 +207,7 @@ where
 impl<C> From<SecretKey<C>> for JwkEcKey
 where
     C: CurveArithmetic + JwkParameters,
-    AffinePoint<C>: FromEncodedPoint<C> + ToEncodedPoint<C>,
+    AffinePoint<C>: FromSec1Point<C> + ToSec1Point<C>,
     FieldBytesSize<C>: ModulusSize,
 {
     fn from(sk: SecretKey<C>) -> JwkEcKey {
@@ -218,7 +218,7 @@ where
 impl<C> From<&SecretKey<C>> for JwkEcKey
 where
     C: CurveArithmetic + JwkParameters,
-    AffinePoint<C>: FromEncodedPoint<C> + ToEncodedPoint<C>,
+    AffinePoint<C>: FromSec1Point<C> + ToSec1Point<C>,
     FieldBytesSize<C>: ModulusSize,
 {
     fn from(sk: &SecretKey<C>) -> JwkEcKey {
@@ -233,7 +233,7 @@ where
 impl<C> TryFrom<JwkEcKey> for PublicKey<C>
 where
     C: CurveArithmetic + JwkParameters,
-    AffinePoint<C>: FromEncodedPoint<C> + ToEncodedPoint<C>,
+    AffinePoint<C>: FromSec1Point<C> + ToSec1Point<C>,
     FieldBytesSize<C>: ModulusSize,
 {
     type Error = Error;
@@ -246,7 +246,7 @@ where
 impl<C> TryFrom<&JwkEcKey> for PublicKey<C>
 where
     C: CurveArithmetic + JwkParameters,
-    AffinePoint<C>: FromEncodedPoint<C> + ToEncodedPoint<C>,
+    AffinePoint<C>: FromSec1Point<C> + ToSec1Point<C>,
     FieldBytesSize<C>: ModulusSize,
 {
     type Error = Error;
@@ -259,7 +259,7 @@ where
 impl<C> From<PublicKey<C>> for JwkEcKey
 where
     C: CurveArithmetic + JwkParameters,
-    AffinePoint<C>: FromEncodedPoint<C> + ToEncodedPoint<C>,
+    AffinePoint<C>: FromSec1Point<C> + ToSec1Point<C>,
     FieldBytesSize<C>: ModulusSize,
 {
     fn from(pk: PublicKey<C>) -> JwkEcKey {
@@ -270,11 +270,11 @@ where
 impl<C> From<&PublicKey<C>> for JwkEcKey
 where
     C: CurveArithmetic + JwkParameters,
-    AffinePoint<C>: FromEncodedPoint<C> + ToEncodedPoint<C>,
+    AffinePoint<C>: FromSec1Point<C> + ToSec1Point<C>,
     FieldBytesSize<C>: ModulusSize,
 {
     fn from(pk: &PublicKey<C>) -> JwkEcKey {
-        Self::from_encoded_point::<C>(&pk.to_encoded_point(false)).expect("JWK encoding error")
+        Self::from_encoded_point::<C>(&pk.to_sec1_point(false)).expect("JWK encoding error")
     }
 }
 

@@ -1,17 +1,18 @@
 [package]
 name = "jose-b64"
-version = "0.2.0-pre"
 authors = ["RustCrypto Developers"]
 license = "Apache-2.0 OR MIT"
 description = "Base64 utilities for use in JOSE crates"
 documentation = "https://docs.rs/jose-b64"
 homepage = "https://github.com/RustCrypto/JOSE/tree/master/jose-b64"
-repository = "https://github.com/RustCrypto/JOSE"
+repository.workspace = true
 categories = ["cryptography", "data-structures", "encoding", "parser-implementations"]
 keywords = ["json", "jose"]
 readme = "README.md"
-edition = "2024"
-rust-version = "1.85"
+
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
 
 [features]
 secret = ["serde", "dep:zeroize", "dep:subtle"]
@@ -19,13 +20,13 @@ json = ["serde", "dep:serde_json"]
 serde = ["dep:serde"]
 
 [dependencies]
-base64ct = { version = "1.8.0", default-features = false, features = ["alloc"] }
+base64ct = { workspace = true }
 
 # optional dependencies
-zeroize = { version = "1.8.1", default-features = false, optional = true, features = ["alloc", "serde"] }
-serde = { version = "1.0.185", default-features = false, optional = true, features = ["alloc", "derive"] }
-serde_json = { version = "1.0.96", default-features = false, optional = true, features = ["alloc"] }
-subtle = { version = "2.5.0", default-features = false, optional = true }
+zeroize = { workspace = true, optional = true }
+serde = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+subtle = { workspace = true, optional = true }
 
 [package.metadata.docs.rs]
 all-features = true
