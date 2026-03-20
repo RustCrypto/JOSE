@@ -39,3 +39,16 @@ pub enum OkpCurves {
     /// X448
     X448,
 }
+
+impl OkpCurves {
+    /// Returns the string representation of the curve.
+    #[must_use]
+    pub const fn as_str(&self) -> &'static str {
+        match self {
+            OkpCurves::Ed25519 => "Ed25519",
+            OkpCurves::Ed448 => "Ed448",
+            OkpCurves::X25519 => "X25519",
+            OkpCurves::X448 => "X448",
+        }
+    }
+}

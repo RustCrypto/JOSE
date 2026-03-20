@@ -62,8 +62,9 @@ jobs:
           - p256
           - p384
           - rsa
+          - thumbprint
           - url
-          - p256,p384,rsa,url
+          - p256,p384,rsa,thumbprint,url
 
           # Test all combinations of crypto enablement
           - p256,p384

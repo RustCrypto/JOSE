@@ -26,9 +26,12 @@ pub mod legacy;
 
 mod key;
 mod prm;
+mod thumbprint;
 
 pub use key::*;
 pub use prm::{Class, Operations, Parameters, Thumbprint};
+#[cfg(feature = "thumbprint")]
+pub use thumbprint::JwkThumbprint;
 
 pub use jose_b64;
 pub use jose_jwa;

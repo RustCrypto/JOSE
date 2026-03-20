@@ -7,9 +7,9 @@
 ![Rust Version][rustc-image]
 [![Project Chat][chat-image]][chat-link]
 
-Pure Rust implementation of the JSON Web Key ([JWK]) component of the
-Javascript Object Signing and Encryption ([JOSE]) specification as described
-in [RFC7517].
+Pure Rust implementation of the JSON Web Key ([JWK]) and JWK Thumbprint
+components of the Javascript Object Signing and Encryption ([JOSE])
+specification as described in [RFC7517] and [RFC7638].
 
 A JWK is a way to represent cryptographic keys in JSON, typically public keys.
 This format contains information about how the key needs to be used so a child
@@ -17,9 +17,12 @@ node can validate what a parent node sends (e.g. with JWTs) or encrypt messages
 for the parent node using this key (e.g. with JWEs). This crate provides data
 structures to interface with this format.
 
+A JWK Thumbprint is a hash of the required members of a JWK, and provides a
+deterministic and unique identifier for the key.
+
 ```rust
-use jose_jwk::{Jwk, JwkSet, Key};
 use jose_jwk::jose_jwa::{Algorithm, Signing};
+use jose_jwk::{Jwk, JwkSet, Key};
 
 let keys = serde_json::json!({
     "keys": [
@@ -57,6 +60,20 @@ assert_eq!(ec_jwk.prm.kid, Some(String::from("some-ec-kid")));
 assert_eq!(rsa_jwk.prm.kid, Some(String::from("some-rsa-kid")));
 
 assert_eq!(rsa_jwk.prm.alg, Some(Algorithm::Signing(Signing::Rs256)));
+
+#[cfg(feature = "thumbprint")]
+{
+    use jose_jwk::JwkThumbprint;
+
+    assert_eq!(
+        ec_jwk.thumbprint(),
+        "cn-I_WNMClehiVp51i_0VpOENW1upEerA8sEam5hn-s"
+    );
+    assert_eq!(
+        rsa_jwk.thumbprint(),
+        "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+    );
+}
 ```
 
 [Documentation][docs-link]
@@ -102,3 +119,4 @@ dual licensed as above, without any additional terms or conditions.
 [JWK]: https://jose.readthedocs.io/en/latest/#jwk
 [JOSE]: https://jose.readthedocs.io/
 [RFC7517]: https://www.rfc-editor.org/rfc/rfc7517
+[RFC7638]: https://datatracker.ietf.org/doc/html/rfc7638

@@ -21,6 +21,7 @@ rust-version = "1.85"
 default = ["crypto"]
 crypto = ["p256", "p384", "p521", "k256", "rsa"]
 legacy = ["dep:base64ct", "dep:elliptic-curve", "dep:serde_json", "dep:serdect", "dep:subtle"]
+thumbprint = ["dep:sha2"]
 
 [dependencies]
 jose-b64 = { version = "=0.2.0-pre", default-features = false, features = ["secret"] }
@@ -34,6 +35,7 @@ p384 = { version = "0.14.0-pre.9", default-features = false, optional = true, fe
 p521 = { version = "0.14.0-pre.9", default-features = false, optional = true, features = ["arithmetic"] }
 k256 = { version = "0.14.0-pre.9", default-features = false, optional = true, features = ["arithmetic"] }
 rsa = { version = "0.10.0-rc.6", default-features = false, optional = true }
+sha2 = { version = "0.11.0-rc.2", default-features = false, optional = true }
 url = { version = "2.4.1", default-features = false, optional = true, features = ["serde"] }
 
 # legacy dependencies
